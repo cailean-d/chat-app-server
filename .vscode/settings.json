@@ -1,0 +1,17 @@
+// Workspace settings
+{
+    // The following will hide the js and map files in the editor
+    "files.exclude": {
+        "node_modules/": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.vscode": true,
+        "**/package-lock.json" : true,
+        "**/karma.conf.js" : true,
+        "**/.editorconfig" : true,
+        "**/LICENSE.md": true
+    }
+}
