@@ -27,8 +27,16 @@ async function getUsers(req, res){
         limit = req.query.limit ? Number(req.query.limit) : 20;
 
         if (limit > 20) limit = 20; 
+
+        let users;
+
+        if (req.query.name) {
+            users = await database.getUsersByName(req.query.name, offset, limit);
+        } else {
+            users = await database.getUsers(offset, limit);
+        }
     
-        let users = await database.getUsers(offset, limit);
+
         let data = [];
         for(user of users){
             data.push({
@@ -76,31 +84,31 @@ async function getUser(req, res){
            }});
         }
 
-        if(user.id == req.session.userid){
-            return res.status(200).json({ 
-                status: 200, 
-                message: 'success', 
-                data: {
-                    id: user.id,
-                    nickname: user.nickname,
-                    email: user.email,
-                    date: user.date,
-                    rooms: user.rooms,
-                    language: user.language,
-                    city: user.city,
-                    country: user.country,
-                    website: user.website,
-                    phone: user.phone,
-                    birthday: user.birthday,
-                    about: user.about,
-                    gender: user.gender,
-                    status: user.status,
-                    avatar: user.avatar,
-                    lastname: user.lastname,
-                    firstname: user.firstname
-                }
-            });
-        } else {
+        // if(user.id == req.session.userid){
+        //     return res.status(200).json({ 
+        //         status: 200, 
+        //         message: 'success', 
+        //         data: {
+        //             id: user.id,
+        //             nickname: user.nickname,
+        //             email: user.email,
+        //             date: user.date,
+        //             rooms: user.rooms,
+        //             language: user.language,
+        //             city: user.city,
+        //             country: user.country,
+        //             website: user.website,
+        //             phone: user.phone,
+        //             birthday: user.birthday,
+        //             about: user.about,
+        //             gender: user.gender,
+        //             status: user.status,
+        //             avatar: user.avatar,
+        //             lastname: user.lastname,
+        //             firstname: user.firstname
+        //         }
+        //     });
+        // } else {
             return res.status(200).json({ 
                 status: 200, 
                 message: 'success', 
@@ -120,7 +128,7 @@ async function getUser(req, res){
                     language: user.language,
                 }
             });
-        }
+        // }
 
     } catch (error) {
         console.log(error);
@@ -177,8 +185,6 @@ async function getMyProfile(req, res){
         return res.status(500).json({ status: 500, message: error, data: null}); 
     }
 }
-
-
 
 async function updateUser(req, res){
     try {

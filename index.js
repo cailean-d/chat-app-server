@@ -13,7 +13,7 @@ const mongoose = require('mongoose');                             // mongodb dri
 const device = require('express-device');                         // user device type info
 const useragent = require('express-useragent');                   // user browser info
 const requestIp = require('request-ip');                          // request ip
-
+const cors = require('cors')
 
 // configs
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
@@ -37,6 +37,7 @@ let global_socket = require('./server/socket/global')(global);
 // let socket_friends      = require('./server/socket/friends')(friends, global);
 
 //middlewares
+app.use(cors())                                                    // allow cors
 app.use(bodyParser.json());                                        // post data json
 app.use(bodyParser.urlencoded({ extended: false }));               // post data encoded
 app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 }}));    // file upload mw

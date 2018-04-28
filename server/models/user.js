@@ -12,14 +12,6 @@ const userSchema = new Schema({
         required: true, 
         unique: "nickname already exists"
     },
-    firstname: {
-        type: String, 
-        default: null
-    },
-    lastname: {
-        type: String, 
-        default: null
-    },
     email: {
         type: String, 
         required: true, 
@@ -31,17 +23,13 @@ const userSchema = new Schema({
     },
     avatar: {
         type: String, 
-        default: 'default.jpg'
+        default: '/assets/images/default-user.png'
     },
     status: {
         type: String, 
         default: 'offile'
     },
     gender: {
-        type: String, 
-        default: null
-    },
-    about: {
         type: String, 
         default: null
     },
@@ -63,6 +51,10 @@ const userSchema = new Schema({
     },
     city: {
         type: String, 
+        default: null
+    },
+    address: {
+        type: String,
         default: null
     },
     language: {
