@@ -32,7 +32,7 @@ let friends = io.of('/friends');
 let general_chat = io.of('/general_chat');
 
 //socket modules
-let global_socket       = require('./server/socket/global')(global);
+let global_socket = require('./server/socket/global')(global);
 // let socket_general_chat = require('./server/socket/general_chat')(global);
 // let socket_friends      = require('./server/socket/friends')(friends, global);
 
@@ -59,7 +59,7 @@ app.get('*', (req, res) => {
 
 // connect to database
 mongoose.Promise = require('bluebird');
-mongoose.connect(dbConfig, {useMongoClient: true}, function(err) {
+mongoose.connect(dbConfig, function(err) {
     if (err) throw err;
     console.log('connected to mongodb!');
 });

@@ -4,26 +4,29 @@ const htmlspecialchars = require('htmlspecialchars');
 
 async function getUsers(req, res){
     try {
+
         let offset, limit;
 
-        if(!/^\d+$/.test(req.query.offset)){
-            return res.status(400).json({ 
-                status: 400, 
-                message: "-offset- must be a number", 
-                data: null
-            });
-        }
+        // if(!/^\d+$/.test(req.query.offset)){
+        //     return res.status(400).json({ 
+        //         status: 400, 
+        //         message: "-offset- must be a number", 
+        //         data: null
+        //     });
+        // }
 
-        if(!/^\d+$/.test(req.query.limit)){
-            return res.status(400).json({ 
-                status: 400, 
-                message: "-limit- must be a number", 
-                data: null
-            });
-        }
+        // if(!/^\d+$/.test(req.query.limit)){
+        //     return res.status(400).json({ 
+        //         status: 400, 
+        //         message: "-limit- must be a number", 
+        //         data: null
+        //     });
+        // }
         
         offset = req.query.offset ? Number(req.query.offset) : 0;
         limit = req.query.limit ? Number(req.query.limit) : 20;
+
+        if (limit > 20) limit = 20; 
     
         let users = await database.getUsers(offset, limit);
         let data = [];
