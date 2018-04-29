@@ -3,8 +3,8 @@ const fs = require('fs');                                         // file system
 const path = require('path');                                     // path module      
 const express = require('express');                               // express framework
 const app = require('express')();                                 // express application
-const httpExpressServer = require('http').Server(app);            // http server
-const io = require('socket.io')(httpExpressServer);               // socket server
+const http = require('http').Server(app);                         // http server
+const io = require('socket.io')(http);                            // socket server
 const bodyParser = require('body-parser')                         // x-www-form-urlencoded
 const fileUpload = require('express-fileupload');                 // file upload
 const session = require('express-session')                        // session for express
@@ -14,6 +14,7 @@ const device = require('express-device');                         // user device
 const useragent = require('express-useragent');                   // user browser info
 const requestIp = require('request-ip');                          // request ip
 const cors = require('cors')
+const colors = require('colors');
 
 // configs
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
@@ -62,9 +63,12 @@ app.get('*', (req, res) => {
 mongoose.Promise = require('bluebird');
 mongoose.connect(dbConfig, function(err) {
     if (err) throw err;
-    console.log('connected to mongodb!');
+    console.log(`connected to ${dbConfig}`.cyan);
 });
 
 
 //start server
-httpExpressServer.listen((process.env.PORT || '3000'), () => console.log(`Server running on localhost:${httpExpressServer.address().port}`));
+http.listen((process.env.PORT || '3000'), () => {
+   console.log(`Server running on localhost:${http.address().port}`.green)
+});
+
