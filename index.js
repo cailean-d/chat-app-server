@@ -24,7 +24,7 @@ const sessionConfig = require('./conf/session');
 
 //custom modules
 const api = require('./server/api/_index');
-const auth = require('./server/auth/auth');
+const auth = require('./server/auth/_index');
 const authmw = require('./server/middlewares/auth');
 
 //socket namespaces

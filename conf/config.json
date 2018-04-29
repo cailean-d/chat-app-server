@@ -1,13 +1,5 @@
 {
 	"db":{
-		"type": "mongodb",
-		"mysql": {
-			"host": "localhost",
-			"user": "root",
-			"password": "",
-			"database": "chat_application",
-			"port": "3306"
-		},
 		"mongodb":{
 			"host": "localhost",
 			"user": "",
@@ -17,7 +9,6 @@
 		}
 	},
 	"auth" : {
-		"type" : "session",
 		"session":{
 			"secret" : "mysecret",
 			"maxAgeServer" : "30",
@@ -27,19 +18,11 @@
 			"saveUninitialized" : "false",
 			"resave" : "true",
 			"store": {
-				"type" : "redis",
 				"redis" : {
 					"host" : "127.0.0.1",
 					"port" : "6379"
-				},
-				"mongo" : "",
-				"mysql" : "" 
+				}
 			}
-		}, 
-		"jwt" : {
-			"algorithm" : "HS256",
-			"secret" : "mysecret",
-			"maxAge" : "30"
-		}
+		} 
 	}
 }

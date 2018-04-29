@@ -1,32 +1,16 @@
 const fs = require('fs'); 
 const path = require('path');     
-const mongoose = require('mongoose');                            
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, './config.json'), 'utf-8'));
-
-let Store, sessionStore, RedisStore, MongoStore;
-
-if(config.auth.session.store.type == "redis"){
-      RedisStore = require('connect-redis');  
-} else if(config.auth.session.store.type == "mongo"){
-      MongoStore = require('connect-mongo');    
-}
+const RedisStore = require('connect-redis');  
 
 module.exports = function(session){
 
-      if(config.auth.session.store.type == "redis"){
-            Store = RedisStore(session);
-            sessionStore = new Store({
-                  host: config.auth.session.store.redis.host,
-                  port: Number(config.auth.session.store.redis.port),
-                  ttl: Number(config.auth.session.maxAgeServer) * 86400
-            })
-      } else if(config.auth.session.store.type == "mongo"){
-            Store = MongoStore(session);
-            sessionStore = new Store({ 
-                  mongooseConnection: mongoose.connection,
-                  ttl: Number(config.auth.session.maxAgeServer) * 86400
-            })
-      }
+      const Store = RedisStore(session);
+      const sessionStore = new Store({
+            host: config.auth.session.store.redis.host,
+            port: Number(config.auth.session.store.redis.port),
+            ttl: Number(config.auth.session.maxAgeServer) * 86400
+      })
       
       let conf = {
             store: sessionStore,
