@@ -4,6 +4,11 @@ const bcrypt = require('bcryptjs');
 
 class AuthAPI {
 
+    constructor() {
+        this.loginUser = this.loginUser.bind(this);
+        this.registerUser = this.registerUser.bind(this);
+    }
+
     async loginUser(req, res){
         try {
                 
