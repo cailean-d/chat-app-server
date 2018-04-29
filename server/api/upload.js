@@ -1,18 +1,8 @@
 const database = require('../database/users');
 const room = require('../database/rooms');
+const uniqid = require('uniqid');
 
 class UploadAPI {
-    
-    makeid() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      
-        for (var i = 0; i < 20; i++){
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-      
-        return text;
-    }
     
     getType(mimetype){
         if (mimetype.indexOf('jpeg') != -1 ){
@@ -33,7 +23,7 @@ class UploadAPI {
             }
     
             let type = req.files.avatar.mimetype;
-            let id = makeid();
+            let id = uniqid();
             let fileType = getType(type);
             let filename = `${id}.${fileType}`;
     

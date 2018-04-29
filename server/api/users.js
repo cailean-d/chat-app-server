@@ -37,10 +37,10 @@ class UserAPI {
             } else {
                 users = await database.getUsers(offset, limit);
             }
-        
-    
+
             let data = [];
-            for(user of users){
+
+            for(let user of users){
                 data.push({
                     id: user.id,
                     nickname: user.nickname,
