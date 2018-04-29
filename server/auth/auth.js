@@ -6,6 +6,15 @@ class AuthAPI {
 
     async loginUser(req, res){
         try {
+                
+            if(req.session.logined){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: "You are already logined",
+                    data: null
+                });
+            }
+
             if(!req.body.email){
                 return res.status(400).json({ 
                     status: 400, 
@@ -20,14 +29,7 @@ class AuthAPI {
                     data: null
                 }); 
             }
-    
-            if(req.session.logined){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "You are already logined",
-                    data: null
-                });
-            }
+
     
             let user = await database.getUserByEmail(req.body.email);
     
@@ -50,7 +52,7 @@ class AuthAPI {
             }
     
             await database.updateUser(user.id, {status: 'online'})
-            createSession(req, res, user);
+            this.createSession(req, res, user);
     
     
         } catch (error) {
@@ -62,11 +64,12 @@ class AuthAPI {
     async registerUser(req, res){
     
         try {
+
             if(!req.body.nickname){
-                return res.status(400).json({ status: 400, message: 'Nickname is required'}); 
+                return res.status(400).json({ status: 400, message: '-nickname- is required'}); 
             }
     
-            if(req.body.nickname && !/^[A-Za-z]+[0-9]*[-_]*/.test(req.body.nickname)){
+            if(req.body.nickname && !/^[A-Za-zА-Яа-я\s]+[0-9]*[-_]*/.test(req.body.nickname)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-nickname- must contain only letters, numbers and -_",
@@ -74,10 +77,10 @@ class AuthAPI {
                 }); 
             }
     
-            if(req.body.nickname && (req.body.nickname.length < 4 && req.body.nickname.length > 30)){
+            if(req.body.nickname && (req.body.nickname.length < 3 && req.body.nickname.length > 30)){
                 return res.status(400).json({ 
                     status: 400, 
-                    message: "-nickname- 's length must be more then 4 and less then 30",
+                    message: "-nickname- 's length must be more than 3 and less than 30",
                     data: null
                 }); 
             }
@@ -89,7 +92,7 @@ class AuthAPI {
             if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(req.body.email)){
                 return res.status(400).json({ 
                     status: 400, 
-                    message: "-email- incorrect email",
+                    message: "-email- incorrect value",
                     data: null
                 }); 
             }
@@ -97,11 +100,12 @@ class AuthAPI {
             if (!req.body.password){
                 return  res.status(400).json({ status: 400, message: 'Password is required'}); 
             }
+
     
-            if(req.body.password.length < 6 && req.body.password.length > 50){
+            if(req.body.password.length < 6 || req.body.password.length > 30){
                 return res.status(400).json({ 
                     status: 400, 
-                    message: "-password- 's length must be more then 6 and less then 50",
+                    message: "-password- 's length must be more than 6 and less than 30",
                     data: null
                 }); 
             }
@@ -111,10 +115,9 @@ class AuthAPI {
     
             await database.updateUser(newUser.id, {status: 'online'});
             
-            createSession(req, res, newUser);
+            this.createSession(req, res, newUser);
     
         } catch (error) {
-            console.log(error);
             if(error.code === 11000){
                 res.status(400).json({ 
                     status: 400, 
@@ -122,6 +125,7 @@ class AuthAPI {
                     data: null
                 }); 
             } else {
+                console.log(error);
                 res.status(400).json({ 
                     status: 400, 
                     message: err.message,
@@ -156,7 +160,7 @@ class AuthAPI {
             if(req.session.logined){
                 return res.status(200).json({ status: 200, message: "success", data: true});
             } else {
-                return res.status(401).json({ status: 401, message: "success", data: false});
+                return res.status(200).json({ status: 200, message: "success", data: false});
             }
     
         } catch (error) {

@@ -3,7 +3,7 @@ const UserModel = require('./../models/user');
 class User {
 
     registerUser(nickname, email, password) {
-        user = new UserModel({
+        let user = new UserModel({
             nickname: nickname,
             email: email,
             password: password,

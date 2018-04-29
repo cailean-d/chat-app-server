@@ -58,6 +58,7 @@ router.delete('/messages/:room/:message_id', messages.deleteMessage);
 router.delete('/messages/:room/:message_id/hide', messages.hideMessage);
 
 
+router.all('**', (req, res) => res.status(404).json({ status: 404, message: 'API not found', data: null}));
 
 
 module.exports = router;
