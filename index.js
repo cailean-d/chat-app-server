@@ -20,6 +20,10 @@ const colors = require('colors');
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
 const dbConfig = require('./conf/database');
 const sessionConfig = require('./conf/session');
+const passport = require('./conf/passport');
+const passportLocal = require('./server/auth/local');
+const passportGoogle = require('./server/auth/google');
+const passportFacebook = require('./server/auth/facebook');
 
 
 //custom modules
@@ -47,12 +51,19 @@ app.use(useragent.express());                                      // user brows
 app.use(requestIp.mw())                                            // user ip info
 app.use(cookieParser(config.auth.session.secret))                  // parse cookie
 app.use(session(sessionConfig(session)));                          // app sessions
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('client'));                                 // static dir
 app.use('/auth', auth);                                            // aut
 app.use('/api', authmw);                                           // auth is required for api
 app.use('/api', api);                                              // include server api
 
 
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+  
 //send index file from all routes
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/index.html'));

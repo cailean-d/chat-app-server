@@ -7,6 +7,26 @@ let database = mongoose.connection;
 autoIncrement.initialize(database);
 
 const userSchema = new Schema({
+    accountType: {
+        type: String,
+        required: true
+    },
+    googleId: {
+        type: String,
+        required: false
+    },
+    facebookId: {
+        type: String,
+        required: false
+    },
+    twitterId: {
+        type: String,
+        required: false
+    },
+    vkId: {
+        type: String,
+        required: false
+    },
     nickname: {
         type: String, 
         required: true, 
@@ -24,10 +44,6 @@ const userSchema = new Schema({
     avatar: {
         type: String, 
         default: '/assets/images/default-user.png'
-    },
-    status: {
-        type: String, 
-        default: 'offile'
     },
     gender: {
         type: String, 

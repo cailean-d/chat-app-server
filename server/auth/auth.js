@@ -1,69 +1,12 @@
 const database = require('../database/users');
 const userinfo = require('../middlewares/userinfo');
 const bcrypt = require('bcryptjs');       
+const passport = require('passport');
 
 class AuthAPI {
 
     constructor() {
-        this.loginUser = this.loginUser.bind(this);
         this.registerUser = this.registerUser.bind(this);
-    }
-
-    async loginUser(req, res){
-        try {
-                
-            if(req.session.logined){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "You are already logined",
-                    data: null
-                });
-            }
-
-            if(!req.body.email){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: '-email- is required',
-                    data: null
-                }); 
-            }
-            if(!req.body.password){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: '-password- is required',
-                    data: null
-                }); 
-            }
-
-    
-            let user = await database.getUserByEmail(req.body.email);
-    
-            if(!user){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: `The email does not exists!`,
-                    data: null
-                });
-            }
-    
-            let comparePassword = await bcrypt.compare(req.body.password, user.password);
-    
-            if(!comparePassword){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: `Incorrect password`,
-                    data: null
-                });
-            }
-    
-            await database.updateUser(user.id, {status: 'online'})
-            this.createSession(req, res, user);
-    
-    
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ status: 500, message: error, data: null}); 
-        }
     }
     
     async registerUser(req, res){
@@ -74,7 +17,7 @@ class AuthAPI {
                 return res.status(400).json({ status: 400, message: '-nickname- is required'}); 
             }
     
-            if(req.body.nickname && !/^[A-Za-zА-Яа-я\s]+[0-9]*[-_]*/.test(req.body.nickname)){
+            if(!/^[A-Za-zА-Яа-я\s]+[0-9]*[-_]*/.test(req.body.nickname)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-nickname- must contain only letters, numbers and -_",
@@ -140,9 +83,9 @@ class AuthAPI {
         }
     }
     
-    async logoutUser(req, res){
+    logoutUser(req, res){
         try {
-            if(!req.session.logined){
+            if(!req.isAuthenticated()){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "You are not logined", 
@@ -150,8 +93,7 @@ class AuthAPI {
                 });
             }
     
-            await database.updateUser(req.session.userid, {status: 'offline'});
-            req.session.destroy();
+            req.logout();
             return res.status(200).json({ status: 200, message: "success", data: null});
         } catch (error) {
             console.log(error);
@@ -159,10 +101,10 @@ class AuthAPI {
         }
     }
     
-    async checkAuth(req, res){
+    checkAuth(req, res){
         try {
     
-            if(req.session.logined){
+            if(req.isAuthenticated()){
                 return res.status(200).json({ status: 200, message: "success", data: true});
             } else {
                 return res.status(200).json({ status: 200, message: "success", data: false});
@@ -172,6 +114,90 @@ class AuthAPI {
             console.log(error);
             return res.status(500).json({ status: 500, message: error, data: null}); 
         }
+    }
+
+    localAuth(req, res, next) {
+
+        if(req.isAuthenticated()){
+            return res.status(400).json({ 
+                status: 400, 
+                message: "You are already logined",
+                data: null
+            });
+        }
+
+        if(!req.body.email){
+            return res.status(400).json({ 
+                status: 400, 
+                message: '-email- is required',
+                data: null
+            }); 
+        }
+        if(!req.body.password){
+            return res.status(400).json({ 
+                status: 400, 
+                message: '-password- is required',
+                data: null
+            }); 
+        }
+
+        passport.authenticate('local', function(err, user, info) {
+    
+            if (err) { return next(err) }
+    
+            if (!user) {
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: info.message,
+                    data: null
+                });
+            }
+    
+            req.logIn(user, function(err) {
+            if (err) { return next(err); }
+                req.user = user;
+                next();
+            });
+    
+        })(req, res, next);
+    }
+
+    localAuthCallback(req, res, next) {
+        return res.status(200).json({ status: 200, message: "success", data: req.user});
+    }
+ 
+    googleAuth(req, res, next) {
+
+        if(req.isAuthenticated()){
+            return res.status(400).json({ 
+                status: 400, 
+                message: "You are already logined",
+                data: null
+            });
+        }
+
+        passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+    }
+
+    googleAuthCallback(req, res, next) {
+        res.redirect('/');
+    }
+
+    facebookAuth(req, res, next){
+
+        if(req.isAuthenticated()){
+            return res.status(400).json({ 
+                status: 400, 
+                message: "You are already logined",
+                data: null
+            });
+        }
+
+        passport.authenticate('facebook')(req, res, next);
+    }
+
+    facebookAuthCallback(req, res, next){
+        res.redirect('/');
     }
     
     createSession(req, res, doc){
