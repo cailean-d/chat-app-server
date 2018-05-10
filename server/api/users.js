@@ -140,7 +140,7 @@ class UserAPI {
     
     async getMyProfile(req, res){
         try {
-            let user = await database.getUser(req.session.userid);
+            let user = await database.getUser(req.user.id);
     
             if(!user){
                return res.status(404).json({ status: 404, message: 'User not found', data: null});
@@ -149,12 +149,11 @@ class UserAPI {
             if(user.deleted){
                 return res.status(200).json({ 
                     status: 200, 
-                    message: 'Your profile is deleted', 
+                    message: 'Your profile is deleted. You can send request "PUT api/users/restore" to restore your profile.', 
                     data: {
                         id: user.id,
                         nickname: user.nickname
-                    },
-                    help: "You can send request 'PUT api/users/restore' to restore your profile."
+                    }
                 });
             }
     

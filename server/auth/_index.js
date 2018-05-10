@@ -4,11 +4,13 @@ const auth = require('./auth');
 const passport = require('passport');
 
 router.post('/reg', auth.registerUser);
-router.post('/login/local', auth.localAuth,  auth.localAuthCallback);
+router.post('/login/local', auth.localAuth,  auth.authCallback);
 router.get('/login/google', auth.googleAuth);
-router.get('/login/google/callback', auth.googleAuth, auth.googleAuthCallback);
+router.get('/login/google/callback', auth.googleAuth, auth.authCallback);
 router.get('/login/facebook', auth.facebookAuth);
-router.get('/login/facebook/callback', auth.facebookAuth, auth.facebookAuthCallback);
+router.get('/login/facebook/callback', auth.facebookAuth, auth.authCallback);
+router.get('/login/twitter', auth.twitterAuth);
+router.get('/login/twitter/callback', auth.twitterAuth, auth.authCallback);
 
 router.delete('/logout', auth.logoutUser);
 router.get('/check', auth.checkAuth);

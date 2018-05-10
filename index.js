@@ -20,16 +20,18 @@ const colors = require('colors');
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
 const dbConfig = require('./conf/database');
 const sessionConfig = require('./conf/session');
+
+// passport auth
 const passport = require('./conf/passport');
 const passportLocal = require('./server/auth/local');
 const passportGoogle = require('./server/auth/google');
 const passportFacebook = require('./server/auth/facebook');
-
+const passportTwitter = require('./server/auth/twitter');
 
 //custom modules
 const api = require('./server/api/_index');
 const auth = require('./server/auth/_index');
-const authmw = require('./server/middlewares/auth');
+const authMiddleware = require('./server/middlewares/auth');
 
 //socket namespaces
 let global = io;
@@ -55,7 +57,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('client'));                                 // static dir
 app.use('/auth', auth);                                            // aut
-app.use('/api', authmw);                                           // auth is required for api
+app.use('/api', authMiddleware);                                   // auth is required for api
 app.use('/api', api);                                              // include server api
 
 

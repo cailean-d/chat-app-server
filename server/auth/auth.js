@@ -162,7 +162,7 @@ class AuthAPI {
         })(req, res, next);
     }
 
-    localAuthCallback(req, res, next) {
+    authCallback(req, res, next) {
         return res.status(200).json({ status: 200, message: "success", data: req.user});
     }
  
@@ -179,10 +179,6 @@ class AuthAPI {
         passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
     }
 
-    googleAuthCallback(req, res, next) {
-        res.redirect('/');
-    }
-
     facebookAuth(req, res, next){
 
         if(req.isAuthenticated()){
@@ -196,10 +192,20 @@ class AuthAPI {
         passport.authenticate('facebook')(req, res, next);
     }
 
-    facebookAuthCallback(req, res, next){
-        res.redirect('/');
+    twitterAuth(req, res, next) {
+
+        if(req.isAuthenticated()){
+            return res.status(400).json({ 
+                status: 400, 
+                message: "You are already logined",
+                data: null
+            });
+        }
+
+        passport.authenticate('twitter')(req, res, next);
+
     }
-    
+
     createSession(req, res, doc){
         req.session.logined = true;
         req.session.userid = doc.id;
