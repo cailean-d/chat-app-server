@@ -27,6 +27,7 @@ const passportLocal = require('./server/auth/local');
 const passportGoogle = require('./server/auth/google');
 const passportFacebook = require('./server/auth/facebook');
 const passportTwitter = require('./server/auth/twitter');
+const passportVKontakte = require('./server/auth/vk');
 
 //custom modules
 const api = require('./server/api/_index');

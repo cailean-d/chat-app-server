@@ -11,6 +11,8 @@ router.get('/login/facebook', auth.facebookAuth);
 router.get('/login/facebook/callback', auth.facebookAuth, auth.authCallback);
 router.get('/login/twitter', auth.twitterAuth);
 router.get('/login/twitter/callback', auth.twitterAuth, auth.authCallback);
+router.get('/login/vk', auth.vkAuth);
+router.get('/login/vk/callback', auth.vkAuth, auth.authCallback);
 
 router.delete('/logout', auth.logoutUser);
 router.get('/check', auth.checkAuth);

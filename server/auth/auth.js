@@ -206,6 +206,20 @@ class AuthAPI {
 
     }
 
+    vkAuth(req, res, next) {
+        
+        if(req.isAuthenticated()){
+            return res.status(400).json({ 
+                status: 400, 
+                message: "You are already logined",
+                data: null
+            });
+        }
+
+        passport.authenticate('vkontakte')(req, res, next);
+
+    }
+
     createSession(req, res, doc){
         req.session.logined = true;
         req.session.userid = doc.id;
