@@ -4,7 +4,7 @@ const auth = require('./auth');
 const passport = require('passport');
 
 router.post('/reg', auth.registerUser);
-router.post('/login/local', auth.localAuth,  auth.authCallback);
+router.post('/login/local', auth.localAuth,  auth.authLocalCallback);
 router.get('/login/google', auth.googleAuth);
 router.get('/login/google/callback', auth.googleAuth, auth.authCallback);
 router.get('/login/facebook', auth.facebookAuth);

@@ -62,8 +62,8 @@ class AuthAPI {
             let newUser = await database.registerUser(req.body.nickname, req.body.email, bcryptedPassword);
     
             await database.updateUser(newUser.id, {status: 'online'});
-            
-            this.createSession(req, res, newUser);
+
+            return res.status(200).json({ status: 200, message: "success", data: null});
     
         } catch (error) {
             if(error.code === 11000){
@@ -163,7 +163,15 @@ class AuthAPI {
     }
 
     authCallback(req, res, next) {
-        return res.status(200).json({ status: 200, message: "success", data: req.user});
+        res.redirect('/');
+    }
+
+    authLocalCallback(req, res, next) {
+        return res.status(200).json({ 
+            status: 200, 
+            message: "success",
+            data: req.user
+        });
     }
  
     googleAuth(req, res, next) {
@@ -220,15 +228,6 @@ class AuthAPI {
 
     }
 
-    createSession(req, res, doc){
-        req.session.logined = true;
-        req.session.userid = doc.id;
-        req.session.firstname = doc.firstname;
-        req.session.lastname = doc.lastname;
-        req.session.userinfo = userinfo(req);
-        return res.status(200).json({ status: 200, type: 'session', message: "success", data: null});
-    }
-    
 }
 
 module.exports = new AuthAPI();
