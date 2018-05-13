@@ -3,8 +3,6 @@ const fs = require('fs');                                         // file system
 const path = require('path');                                     // path module      
 const express = require('express');                               // express framework
 const app = require('express')();                                 // express application
-const http = require('http').Server(app);                         // http server
-const io = require('socket.io')(http);                            // socket server
 const bodyParser = require('body-parser')                         // x-www-form-urlencoded
 const fileUpload = require('express-fileupload');                 // file upload
 const session = require('express-session')                        // session for express
@@ -15,6 +13,16 @@ const useragent = require('express-useragent');                   // user browse
 const requestIp = require('request-ip');                          // request ip
 const cors = require('cors')
 const colors = require('colors');
+
+
+var privateKey  = fs.readFileSync('./conf/ssl/server.key', 'utf8');
+var certificate = fs.readFileSync('./conf/ssl/server.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+const https = require('https').Server(credentials, app);          // http server
+const io = require('socket.io')(https);                           // socket server
+
 
 // configs
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
@@ -77,7 +85,7 @@ mongoose.connect(dbConfig, function(err) {
 
 
 //start server
-http.listen((process.env.PORT || '3000'), () => {
-   console.log(`Server running on localhost:${http.address().port}`.green)
+https.listen((process.env.PORT || '3000'), () => {
+   console.log(`Server running on localhost:${https.address().port}`.green)
 });
 

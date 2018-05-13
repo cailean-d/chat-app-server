@@ -5,10 +5,6 @@ const passport = require('passport');
 
 class AuthAPI {
 
-    constructor() {
-        this.registerUser = this.registerUser.bind(this);
-    }
-    
     async registerUser(req, res){
     
         try {
@@ -197,7 +193,7 @@ class AuthAPI {
             });
         }
 
-        passport.authenticate('facebook')(req, res, next);
+        passport.authenticate('facebook', { scope : ['email'] })(req, res, next);
     }
 
     twitterAuth(req, res, next) {

@@ -6,10 +6,11 @@ const config = require('./../../conf/facebook');
 passport.use(new FacebookStrategy({
     clientID: config.id,
     clientSecret: config.secret,
-    callbackURL: "http://localhost:3000/auth/login/facebook/callback",
-    profileFields: ['id', 'displayName', 'photos', 'email']
+    callbackURL: "https://localhost:3000/auth/login/facebook/callback",
+    profileFields: ['id', 'displayName', 'photos', 'emails']
   },
   function(accessToken, refreshToken, profile, done) {
+    console.log(profile);
     User.findOrCreate(profile, function(err, user) {
       return done(err, user);
     });

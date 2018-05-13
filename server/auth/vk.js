@@ -7,7 +7,7 @@ passport.use(new VKontakteStrategy(
     {
       clientID: config.id,
       clientSecret: config.secret,
-      callbackURL: 'http://localhost:3000/auth/login/vk/callback',
+      callbackURL: 'https://localhost:3000/auth/login/vk/callback',
     },
     function(accessToken, refreshToken, params, profile, done) {
         User.findOrCreate(profile, function(err, user) {
