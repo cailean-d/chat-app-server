@@ -17,7 +17,7 @@ class AuthAPI {
                 return res.status(400).json({ status: 400, message: '-nickname- is required'}); 
             }
     
-            if(!/^[A-Za-zА-Яа-я\s]+[0-9]*[-_]*/.test(req.body.nickname)){
+            if(!/^[A-Za-zА-Яа-я\s-_]+[0-9]*$/.test(req.body.nickname)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-nickname- must contain only letters, numbers and -_",
