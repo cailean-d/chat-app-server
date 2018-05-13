@@ -32,7 +32,7 @@ class User {
                 return callback(null, doc);
             } else {
                 let user = new UserModel({
-                    twitterId: profile.id,
+                    [profile.provider + 'Id'] : profile.id,
                     nickname:  profile.displayName,
                     email: profile.emails[0].value,
                     avatar: profile.photos[0].value,
