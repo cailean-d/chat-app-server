@@ -39,8 +39,9 @@ class User {
                     password: '___',
                     accountType: profile.provider
                 });
-                user.save();
-                return callback(null, user);
+                user.save().then(() => {
+                    return callback(null, user);
+                });
             }
         });
     }

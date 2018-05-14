@@ -29,8 +29,7 @@ const userSchema = new Schema({
     },
     nickname: {
         type: String, 
-        required: true, 
-        unique: "nickname already exists"
+        required: true 
     },
     email: {
         type: String, 
