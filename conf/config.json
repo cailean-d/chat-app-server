@@ -14,7 +14,7 @@
 			"maxAgeServer" : "30",
 			"maxAgeClient" : "30",
 			"httpOnly" : "true",
-			"secure" : "false",
+			"secure" : "true",
 			"saveUninitialized" : "false",
 			"resave" : "true",
 			"store": {
