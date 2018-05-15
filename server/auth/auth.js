@@ -65,7 +65,7 @@ class AuthAPI {
             if(error.code === 11000){
                 res.status(400).json({ 
                     status: 400, 
-                    message: "Email or Nickname already exists", 
+                    message: "Email already exists", 
                     data: null
                 }); 
             } else {
