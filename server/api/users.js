@@ -119,6 +119,7 @@ class UserAPI {
                         nickname: user.nickname,
                         firstname: user.firstname,
                         lastname: user.lastname,
+                        email: user.email,
                         avatar: user.avatar,
                         gender: user.gender,
                         about: user.about,
