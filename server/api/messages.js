@@ -27,7 +27,7 @@ class MessageAPI {
             req.params.room = Number(req.params.room);
     
             let room = await rooms.findRoom(req.params.room);
-            let user = await users.getUser(req.session.userid);
+            let user = await users.getUser(req.user.id);
     
             if(!room){
                return res.status(400).json({ 
@@ -133,7 +133,7 @@ class MessageAPI {
             }
     
             let users = permissions.users;
-            await database.addMessage(req.session.userid, req.body.message, req.params.room);   
+            await database.addMessage(req.user.id, req.body.message, req.params.room);   
             return res.status(200).json({status: 200, message: "success", data: null});
     
         } catch (error) {
@@ -182,7 +182,7 @@ class MessageAPI {
                 });
             }
     
-            if(message.sender == req.session.userid){
+            if(message.sender == req.user.id){
                 return res.status(400).json({ 
                     status: 400, 
                     message: 'You cannot read your own message',
@@ -239,7 +239,7 @@ class MessageAPI {
                 });
             }
     
-            if(message.sender != req.session.userid){
+            if(message.sender != req.user.id){
                 return res.status(400).json({ 
                     status: 400, 
                     message: 'You can delete only your own messages',
@@ -247,7 +247,7 @@ class MessageAPI {
                 }); 
             }
     
-            await database.deleteMessage(req.session.userid, req.params.message_id, req.params.room);
+            await database.deleteMessage(req.user.id, req.params.message_id, req.params.room);
             return res.status(200).json({status: 200, message: "success", data: null});
     
         } catch (error) {
@@ -296,7 +296,7 @@ class MessageAPI {
                 });
             }
     
-            await database.hideMessage(req.session.userid, req.params.message_id, req.params.room);
+            await database.hideMessage(req.user.id, req.params.message_id, req.params.room);
             return res.status(200).json({status: 200, message: "success", data: null});
             
         } catch (error) {
@@ -397,7 +397,7 @@ class MessageAPI {
             let users = await userData(req, res);
             offset = req.query.offset ? Number(req.query.offset) : 0;
             limit = req.query.limit ? Number(req.query.limit) : 20;
-            let messages = await database.getMessages(req.session.userid, 
+            let messages = await database.getMessages(req.user.id, 
                                                         req.params.room, 
                                                         offset, 
                                                         limit);

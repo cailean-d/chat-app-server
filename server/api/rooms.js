@@ -7,7 +7,7 @@ class RoomAPI {
     async getRooms(req, res){
 
         try {
-            let user = await users.getUser(req.session.userid);
+            let user = await users.getUser(req.user.id);
     
             if(!user){
                 return res.status(400).json({ 
@@ -39,7 +39,7 @@ class RoomAPI {
                     }); 
                 }
     
-                let lastMessage = await messages.getLastMessage(req.session.userid, room_id);
+                let lastMessage = await messages.getLastMessage(req.user.id, room_id);
     
                 if(lastMessage){
     
@@ -103,7 +103,7 @@ class RoomAPI {
     
             req.params.room = Number(req.params.room);
             
-            let user = await users.getUser(req.session.userid);
+            let user = await users.getUser(req.user.id);
     
             if(!user){
                 return res.status(400).json({ 
@@ -133,7 +133,7 @@ class RoomAPI {
                 }); 
             }
     
-            let lastMessage = await messages.getLastMessage(req.session.userid, room.id);
+            let lastMessage = await messages.getLastMessage(req.user.id, room.id);
     
             if(lastMessage){
                 let sender = users.getUser(lastMessage.sender);
@@ -193,7 +193,7 @@ class RoomAPI {
     
             let room = await database.findRoom(req.params.room);
     
-            if(room.owner == req.session.userid){
+            if(room.owner == req.user.id){
                 await database.deleteRoom(req.params.room);
                 await messages.deleteMessagesFromRoom(req.params.room);
                 res.status(200).json({status: 200, message: "success", data: null});           
@@ -295,7 +295,7 @@ class RoomAPI {
                 await database.setTitle(req.params.room, req.body.title);
             }
     
-            if(room.owner == req.session.userid){
+            if(room.owner == req.user.id){
                 await database.addUser(req.params.room, req.params.user);
                 await users.addRoom(req.params.room, req.params.user);
                 res.status(200).json({status: 200, message: "success", data: null});           
@@ -346,7 +346,7 @@ class RoomAPI {
                 });
             }
     
-            if(req.params.user == req.session.userid){
+            if(req.params.user == req.user.id){
                 return res.status(400).json({ 
                     status: 400, 
                     message: 'You cannot delete yourself',
@@ -376,7 +376,7 @@ class RoomAPI {
                 }); 
             }
     
-            if(room.owner == req.session.userid){
+            if(room.owner == req.user.id){
                await database.deleteUser(req.params.room, req.params.user);
                await users.deleteRoom(req.params.room, req.params.user);
                res.status(200).json({status: 400, message: "success", data: null});           
@@ -480,7 +480,7 @@ class RoomAPI {
                 });
             }
     
-            if(req.params.user == req.session.userid){
+            if(req.params.user == req.user.id){
                 return res.status(400).json({ 
                     status: 400, 
                     message: 'You cannot use your own id',
@@ -488,7 +488,7 @@ class RoomAPI {
                 }); 
             }
     
-            let user1 = await users.getUser(req.session.userid);
+            let user1 = await users.getUser(req.user.id);
             let user2 = await users.getUser(req.params.user);
     
             if(!user1 || !user2){
@@ -510,8 +510,8 @@ class RoomAPI {
                 let users = room.users;
     
                 if(users.length == 2){
-                    if((users[0] == req.session.userid && users[1] == req.params.user)
-                    || (users[1] == req.session.userid && users[0] == req.params.user)){
+                    if((users[0] == req.user.id && users[1] == req.params.user)
+                    || (users[1] == req.user.id && users[0] == req.params.user)){
                        return res.status(200).json({ status: 200, message: "success", data: room.id});
                     }
                 } 
@@ -527,8 +527,8 @@ class RoomAPI {
     
     async createRoom(req, res){
         try {
-            let room = await database.addRoom(req.session.userid, req.params.user);
-            await users.addRoom(room.id, req.session.userid);
+            let room = await database.addRoom(req.user.id, req.params.user);
+            await users.addRoom(room.id, req.user.id);
             await users.addRoom(room.id, req.params.user);
             return res.status(200).json({ status: 200, message: "success", data: room.id});
         } catch (error) {

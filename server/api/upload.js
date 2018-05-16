@@ -38,7 +38,7 @@ class UploadAPI {
             }
     
             await file.mv(`client/assets/img/avatar/${filename}`);
-            await database.updateUser(req.session.userid, {avatar: filename});
+            await database.updateUser(req.user.id, {avatar: filename});
             return res.status(200).json({ status: 200, message: "success", data: null});
     
         } catch (error) {
@@ -76,7 +76,7 @@ class UploadAPI {
             req.params.room = Number(req.params.room);
     
             let room = await room.findRoom(req.params.room);
-            let user = await database.getUser(req.session.userid);
+            let user = await database.getUser(req.user.id);
     
             if(!room){
                return res.status(400).json({ 
@@ -86,7 +86,7 @@ class UploadAPI {
                 }); 
             }
     
-            if(room.owner != req.session.userid){
+            if(room.owner != req.user.id){
                 return res.status(400).json({ 
                     status: 400, 
                     message: 'room image can be changed only by room owner', 

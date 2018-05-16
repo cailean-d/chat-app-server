@@ -86,7 +86,7 @@ class UserAPI {
                }});
             }
     
-            // if(user.id == req.session.userid){
+            // if(user.id == req.user.id){
             //     return res.status(200).json({ 
             //         status: 200, 
             //         message: 'success', 
@@ -398,7 +398,7 @@ class UserAPI {
                     }); 
                 }
     
-                let user = await database.getUser(req.session.userid);
+                let user = await database.getUser(req.user.id);
     
                 if (!user){
                     return res.status(404).json({ 
@@ -429,11 +429,11 @@ class UserAPI {
                 delete req.body.oldpassword;
                 req.body.password = bcryptedPassword;
                 
-                await database.updateUser(req.session.userid, req.body);
+                await database.updateUser(req.user.id, req.body);
                 return res.status(200).json({ status: 200, message: "success", data: null});
     
             } else {
-                await database.updateUser(req.session.userid, req.body);
+                await database.updateUser(req.user.id, req.body);
                 return res.status(200).json({ status: 200, message: "success", data: null});
             }
             
@@ -445,13 +445,13 @@ class UserAPI {
     
     async deleteUser(req, res){
         try {
-            let user = await database.getUser(req.session.userid);
+            let user = await database.getUser(req.user.id);
     
             if(!user){
                 return res.status(404).json({ status: 404, message: `User not found!`, data: null});
             }
     
-            await database.deleteUser(req.session.userid);
+            await database.deleteUser(req.user.id);
             req.session.destroy();
             return res.status(200).json({ status: 200, message: "success", data: null});
         } catch (error) {
@@ -462,13 +462,13 @@ class UserAPI {
     
     async restoreUser(req, res){
         try {
-            let user = await database.getUser(req.session.userid);
+            let user = await database.getUser(req.user.id);
     
             if(!user){
                 return res.status(404).json({ status: 404, message: `User not found!`, data: null});
             }
     
-            await database.restoreUser(req.session.userid);
+            await database.restoreUser(req.user.id);
             return res.status(200).json({ status: 200, message: "success", data: null});
         } catch (error) {
             console.log(error);
