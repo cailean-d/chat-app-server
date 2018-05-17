@@ -80,6 +80,21 @@ class User {
             { $pull: { rooms: room }
         });
     }
+
+    addFavorite(id, user) {
+        return UserModel.update(
+            { id: user },
+            { $push: { favorite: id }
+        });
+    }
+
+    deleteFavorite(id, user) {
+        return UserModel.update(
+            { id: user },
+            { $pull: { favorite: id }
+        });
+    }
+
 }
 
 module.exports = new User();

@@ -39,6 +39,11 @@ router.get('/friends/isfriend/:id', friends.isFriend);
 router.post('/friends/:id', friends.addFriend);
 router.delete('/friends/:id', friends.deleteFriend);
 
+//favorite api
+router.get('/favorite', users.getFavorite);
+router.post('/favorite/:id', users.addFavorite);
+router.delete('/favorite/:id', users.deleteFavorite);
+
 // rooms api
 router.post('/rooms/open/:user', rooms.openRoom);
 router.get('/rooms', rooms.getRooms);

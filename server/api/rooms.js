@@ -379,7 +379,7 @@ class RoomAPI {
             if(room.owner == req.user.id){
                await database.deleteUser(req.params.room, req.params.user);
                await users.deleteRoom(req.params.room, req.params.user);
-               res.status(200).json({status: 400, message: "success", data: null});           
+               res.status(200).json({status: 200, message: "success", data: null});           
             } else {
                 return res.status(400).json({ 
                     status: 400, 

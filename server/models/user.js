@@ -76,6 +76,10 @@ const userSchema = new Schema({
         type: Array, 
         default: null
     },
+    favorite: {
+        type: Array, 
+        default: null
+    },
     rooms: {
         type: Array, 
         default: null

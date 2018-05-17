@@ -485,6 +485,102 @@ class UserAPI {
             return res.status(500).json({ status: 500, message: error, data: null}); 
         }
     }
+
+    async addFavorite(req, res){
+
+        try {
+
+            let me = await database.getUser(req.user.id);
+
+            if (me.favorite.indexOf(req.params.id) != -1) {
+                return res.status(400).json({ 
+                    status: 400, message: "User is already in the list", 
+                    data: null
+                });
+            }
+
+            if(!/^\d+$/.test(req.params.id)){
+                return res.status(400).json({ status: 400, message: "-id- must be a number", data: null});
+            }
+                
+            req.params.id = Number(req.params.id);
+        
+            let user = await database.getUser(req.params.id);
+
+            if(!user){
+                return res.status(404).json({ status: 404, message: 'User not found', data: null});
+            }
+
+            await database.addFavorite(req.params.id, req.user.id);
+            res.status(200).json({status: 200, message: "success", data: null}); 
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null}); 
+        }
+   
+    }
+
+    async deleteFavorite(req, res){
+
+        try {
+
+            if(!/^\d+$/.test(req.params.id)){
+                return res.status(400).json({ status: 400, message: "-id- must be a number", data: null});
+            }
+                
+            req.params.id = Number(req.params.id);
+    
+            await database.deleteFavorite(req.params.id, req.user.id);
+            res.status(200).json({status: 200, message: "success", data: null}); 
+            
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null}); 
+        }
+    }
+
+    async getFavorite(req, res){
+
+        try {
+
+            let user = await database.getUser(req.user.id);
+
+            if(!user){
+                return res.status(404).json({ status: 404, message: 'User not found', data: null});
+            }
+
+            let favoriteArray = user.favorite;
+            let users = [];
+            for (let i of favoriteArray) {
+                let user = await database.getUser(i);
+                if (user) {
+                    users.push({
+                        id: user.id,
+                        nickname: user.nickname,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        email: user.email,
+                        avatar: user.avatar,
+                        gender: user.gender,
+                        about: user.about,
+                        birthday: user.birthday,
+                        phone: user.phone,
+                        website: user.website,
+                        country: user.country,
+                        city: user.city,
+                        language: user.language,
+                    });
+                }
+            }
+
+            return res.status(200).json({status: 200, message: "success", data: users}); 
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null}); 
+        }
+    }
     
 }
 
