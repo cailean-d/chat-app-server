@@ -15,10 +15,10 @@ const cors = require('cors')
 const colors = require('colors');
 
 
-var privateKey  = fs.readFileSync('./conf/ssl/server.key', 'utf8');
-var certificate = fs.readFileSync('./conf/ssl/server.crt', 'utf8');
+const privateKey  = fs.readFileSync('./conf/ssl/server.key', 'utf8');
+const certificate = fs.readFileSync('./conf/ssl/server.crt', 'utf8');
 
-var credentials = {key: privateKey, cert: certificate};
+const credentials = {key: privateKey, cert: certificate};
 
 const https = require('https').Server(credentials, app);          // http server
 const io = require('socket.io')(https);                           // socket server
