@@ -517,7 +517,7 @@ class RoomAPI {
                 return this.createRoom(req, res);
             }
     
-            for(room_id of rooms){
+            for(let room_id of rooms){
                 let room = await database.findRoom(room_id);
                 let users = room.users;
     
