@@ -146,7 +146,7 @@ class RoomAPI {
             let lastMessage = await messages.getLastMessage(req.user.id, room.id);
     
             if(lastMessage){
-                let sender = users.getUser(lastMessage.sender);
+                let sender = await users.getUser(lastMessage.sender);
     
                 if(!sender){
                     return res.status(400).json({ 
@@ -431,8 +431,31 @@ class RoomAPI {
             if(!room){
                 return res.status(400).json({status: 400, message: "Room not found", data: null});
             }
+
+
+            let data = [];
+
+            for (let id of room.users) {
+                let user = await users.getUser(id);
+                data.push({
+                    id: user.id,
+                    nickname: user.nickname,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    avatar: user.avatar,
+                    gender: user.gender,
+                    about: user.about,
+                    birthday: user.birthday,
+                    phone: user.phone,
+                    website: user.website,
+                    country: user.country,
+                    city: user.city,
+                    language: user.language,
+                });
+            }
     
-            return res.status(200).json({ status: 400, message: 'success', data: room.users});
+            return res.status(200).json({ status: 400, message: 'success', data: data});
             
         } catch (error) {
             console.log(error);

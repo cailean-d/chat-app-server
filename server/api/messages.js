@@ -82,7 +82,7 @@ class MessageAPI {
             let roomUsers = room.users;
             let userDataObj = {};
     
-            for(user_id of roomUsers){
+            for(let user_id of roomUsers){
                 let user = await users.getUser(user_id);
     
                 if(!user){
@@ -409,13 +409,14 @@ class MessageAPI {
                                                         req.params.room, 
                                                         offset, 
                                                         limit);
-            for(message of messages){
+            for(let message of messages){
                 data.push({
                     message: message.message,
                     sender_id: message.sender,
                     sender_nickname: users[message.sender].nickname,
                     sender_avatar: users[message.sender].avatar,
-                    status: message.status
+                    status: message.status,
+                    timestamp: message.date
                 })
             }
     
