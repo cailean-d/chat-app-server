@@ -4,6 +4,14 @@ const messages = require('../database/messages');
 
 class RoomAPI {
 
+    constructor() {
+        const proto = Object.getPrototypeOf(this);
+        const names = Object.getOwnPropertyNames(proto);
+        for (const i of names) {
+            this[i] = this[i].bind(this);
+        }
+    }
+
     async getRooms(req, res){
 
         try {
@@ -28,7 +36,7 @@ class RoomAPI {
                 });
             } 
     
-            for(room_id of rooms){
+            for(let room_id of rooms){
                 let room = await database.findRoom(room_id);
     
                 if(!room){
@@ -43,7 +51,7 @@ class RoomAPI {
     
                 if(lastMessage){
     
-                    let sender = users.getUser(lastMessage.sender);
+                    let sender = await users.getUser(lastMessage.sender);
     
                     if(!sender){
                         return res.status(400).json({ 
@@ -58,14 +66,16 @@ class RoomAPI {
                             id: room.id,
                             title : room.title,
                             picture: room.pic,
-                            message: lastMessage.message
+                            message: lastMessage.message,
+                            users: room.users
                         });
                     } else {
                         data.push({
                             id: room.id,
                             title : sender.nickname,
                             picture: sender.avatar,
-                            message: lastMessage.message
+                            message: lastMessage.message,
+                            users: room.users
                         });
                     }
                 }
@@ -151,14 +161,16 @@ class RoomAPI {
                         id: room.id,
                         title : room.title,
                         picture: room.pic,
-                        message: lastMessage.message
+                        message: lastMessage.message,
+                        users: room.users
                     }});   
                 } else {
                     return res.status(200).json({ status: 200, message: "success", data: {
                         id: room.id,
                         title : sender.nickname,
                         picture: sender.avatar,
-                        message: lastMessage.message
+                        message: lastMessage.message,
+                        users: room.users
                     }});   
                 }
             }
@@ -502,7 +514,7 @@ class RoomAPI {
             let rooms = user1.rooms;
     
             if(rooms.length == 0) {
-                return createRoom(req, res);
+                return this.createRoom(req, res);
             }
     
             for(room_id of rooms){
@@ -517,7 +529,7 @@ class RoomAPI {
                 } 
             }
     
-            return createRoom(req, res);
+            return this.createRoom(req, res);
     
         } catch (error) {
             console.log(error);

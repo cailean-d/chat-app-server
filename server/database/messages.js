@@ -2,13 +2,13 @@ const MessageModel = require('./../models/message');
 
 class Message {
 
-    addMessage(sender, message, room){
-        let message = new MessageModel({
+    addMessage(sender, msg, room){
+        let _message = new MessageModel({
             sender: sender,
-            message: message,
+            message: msg,
             room: room
         });
-        return message.save();
+        return _message.save();
     }
     
     readMessage(message_id, room){

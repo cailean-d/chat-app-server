@@ -5,6 +5,14 @@ const htmlspecialchars = require('htmlspecialchars');
 
 class MessageAPI {
 
+    constructor() {
+        const proto = Object.getPrototypeOf(this);
+        const names = Object.getOwnPropertyNames(proto);
+        for (const i of names) {
+            this[i] = this[i].bind(this);
+        }
+    }
+
     async roomPermissions(req, res){
 
         try {
@@ -122,7 +130,7 @@ class MessageAPI {
     
             req.body.message = htmlspecialchars(req.body.message);
     
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
     
             if (!permissions){
                 return res.status(400).json({ 
@@ -162,7 +170,7 @@ class MessageAPI {
     
             req.params.message_id = Number(req.params.message_id);
     
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
             
             if (!permissions){
                 return res.status(400).json({ 
@@ -219,7 +227,7 @@ class MessageAPI {
     
             req.params.message_id = Number(req.params.message_id);
             
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
             
             if (!permissions){
                 return res.status(400).json({ 
@@ -276,7 +284,7 @@ class MessageAPI {
     
             req.params.message_id = Number(req.params.message_id);
     
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
             
             if (!permissions){
                 return res.status(400).json({ 
@@ -286,7 +294,7 @@ class MessageAPI {
                 }); 
             }
     
-            let message  = await database.getMessage(req.params.message_id, req.params.room);
+            let message = await database.getMessage(req.params.message_id, req.params.room);
             
             if(!message){
                 return res.status(400).json({ 
@@ -325,7 +333,7 @@ class MessageAPI {
     
             req.params.message_id = Number(req.params.message_id);
     
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
             
             if (!permissions){
                 return res.status(400).json({ 
@@ -367,7 +375,7 @@ class MessageAPI {
     
     async getMessages(req, res){
         try {
-            let permissions = roomPermissions(req, res);
+            let permissions = this.roomPermissions(req, res);
             
             if (!permissions){
                 return res.status(400).json({ 
@@ -394,7 +402,7 @@ class MessageAPI {
             }
             
             let offset, limit, data = [];
-            let users = await userData(req, res);
+            let users = await this.userData(req, res);
             offset = req.query.offset ? Number(req.query.offset) : 0;
             limit = req.query.limit ? Number(req.query.limit) : 20;
             let messages = await database.getMessages(req.user.id, 

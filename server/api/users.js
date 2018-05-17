@@ -511,8 +511,24 @@ class UserAPI {
                 return res.status(404).json({ status: 404, message: 'User not found', data: null});
             }
 
+            let u = {
+                id: user.id,
+                nickname: user.nickname,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                avatar: user.avatar,
+                gender: user.gender,
+                about: user.about,
+                birthday: user.birthday,
+                phone: user.phone,
+                website: user.website,
+                country: user.country,
+                city: user.city,
+                language: user.language,
+            }
+
             await database.addFavorite(req.params.id, req.user.id);
-            res.status(200).json({status: 200, message: "success", data: null}); 
+            res.status(200).json({status: 200, message: "success", data: u}); 
 
         } catch (error) {
             console.log(error);
