@@ -568,7 +568,7 @@ class FriendAPI {
             let meisinvited = await database.isInvited(req.params.id, req.user.id);
             
             if(!meisinvited){
-                return res.status(400).json({ status: 400, message: "success", data: false});
+                return res.status(200).json({ status: 200, message: "success", data: false});
             }
     
             return res.status(200).json({ status: 200, message: "success", data: true});
