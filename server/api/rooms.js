@@ -70,10 +70,21 @@ class RoomAPI {
                             users: room.users
                         });
                     } else {
+
+                        let user2 = await users.getUser(room.users[1]);
+
+                        if(!user2){
+                            return res.status(400).json({ 
+                                status: 400, 
+                                message: "User doesnt exist", 
+                                data: null
+                            }); 
+                        }
+
                         data.push({
                             id: room.id,
                             title : sender.nickname,
-                            picture: sender.avatar,
+                            picture: user2.avatar,
                             message: lastMessage.message,
                             users: room.users
                         });
@@ -165,10 +176,21 @@ class RoomAPI {
                         users: room.users
                     }});   
                 } else {
+
+                    let user2 = await users.getUser(room.users[1]);
+
+                    if(!user2){
+                        return res.status(400).json({ 
+                            status: 400, 
+                            message: "User doesnt exist", 
+                            data: null
+                        }); 
+                    }
+
                     return res.status(200).json({ status: 200, message: "success", data: {
                         id: room.id,
                         title : sender.nickname,
-                        picture: sender.avatar,
+                        picture: user2.avatar,
                         message: lastMessage.message,
                         users: room.users
                     }});   
