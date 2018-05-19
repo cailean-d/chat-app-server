@@ -23,7 +23,6 @@ const credentials = {key: privateKey, cert: certificate};
 const https = require('https').Server(credentials, app);          // http server
 const io = require('socket.io')(https);                           // socket server
 
-
 // configs
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
 const dbConfig = require('./conf/database');
@@ -43,12 +42,11 @@ const auth = require('./server/auth/_index');
 const authMiddleware = require('./server/middlewares/auth');
 
 //socket namespaces
-let global = io;
-let friends = io.of('/friends');
-let general_chat = io.of('/general_chat');
+// let friends = io.of('/friends');
+// let general_chat = io.of('/general_chat');
 
 //socket modules
-let global_socket = require('./server/socket/global')(global);
+const global_socket = require('./server/socket/global')(io);
 // let socket_general_chat = require('./server/socket/general_chat')(global);
 // let socket_friends      = require('./server/socket/friends')(friends, global);
 
