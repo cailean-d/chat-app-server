@@ -71,7 +71,13 @@ class RoomAPI {
                         });
                     } else {
 
-                        let user2 = await users.getUser(room.users[1]);
+                        let user2;
+
+                        if (room.users[0] !== req.user.id) {
+                            user2 = await users.getUser(room.users[0]);
+                        } else {
+                            user2 = await users.getUser(room.users[1]);
+                        }
 
                         if(!user2){
                             return res.status(400).json({ 
@@ -83,7 +89,7 @@ class RoomAPI {
 
                         data.push({
                             id: room.id,
-                            title : sender.nickname,
+                            title : user2.nickname,
                             picture: user2.avatar,
                             message: lastMessage.message,
                             users: room.users
@@ -177,7 +183,13 @@ class RoomAPI {
                     }});   
                 } else {
 
-                    let user2 = await users.getUser(room.users[1]);
+                    let user2;
+
+                    if (room.users[0] !== req.user.id) {
+                        user2 = await users.getUser(room.users[0]);
+                    } else {
+                        user2 = await users.getUser(room.users[1]);
+                    }
 
                     if(!user2){
                         return res.status(400).json({ 
@@ -189,7 +201,7 @@ class RoomAPI {
 
                     return res.status(200).json({ status: 200, message: "success", data: {
                         id: room.id,
-                        title : sender.nickname,
+                        title : user2.nickname,
                         picture: user2.avatar,
                         message: lastMessage.message,
                         users: room.users
