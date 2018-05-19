@@ -55,6 +55,7 @@ class UserAPI {
                     country: user.country,
                     city: user.city,
                     language: user.language,
+                    date: user.date
                 });
             }
             res.status(200).json({ status: 200, message: "success", data: data});
@@ -129,6 +130,7 @@ class UserAPI {
                         country: user.country,
                         city: user.city,
                         language: user.language,
+                        date: user.date
                     }
                 });
             // }
