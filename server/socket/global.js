@@ -8,11 +8,11 @@ module.exports = function(io){
 
         socket.on('disconnect', () => {
             delete users[socket.handshake.query.id];
-            // socket.leave(room);
         });
 
         chatSocket(socket);
-        friendSocket(socket, users);
+        friendSocket(socket);
+        userOnline(socket);
 
     });
 
@@ -75,3 +75,28 @@ function friendSocket(socket) {
 
 }
     
+
+function userOnline(socket) {
+
+    socket.broadcast.emit('online', socket.handshake.query.id);
+
+    socket.on('disconnect', () => {
+        let id = socket.handshake.query.id;
+        setTimeout(() => {
+            if (!users[id]) {
+                socket.broadcast.emit('offline', socket.handshake.query.id);
+            }
+        }, 10000);
+    });
+
+    socket.on('get_online', (data) => {
+
+        if (users[data]) {
+            socket.emit('is_online', JSON.stringify({id: data, result: true}));
+        } else {
+            socket.emit('is_online', JSON.stringify({id: data, result: false}));
+        }
+
+    })
+
+}

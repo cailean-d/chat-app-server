@@ -161,8 +161,10 @@ class RoomAPI {
             }
     
             let lastMessage = await messages.getLastMessage(req.user.id, room.id);
-    
+            let msg;
+
             if(lastMessage){
+
                 let sender = await users.getUser(lastMessage.sender);
     
                 if(!sender){
@@ -172,44 +174,50 @@ class RoomAPI {
                         data: null
                     }); 
                 }
+
+                msg = lastMessage.message;
+
+            } else {
+                msg = "";
+            }
+
     
-                if(room.users.length > 2) {
-                    return res.status(200).json({ status: 200, message: "success", data: {
-                        id: room.id,
-                        title : room.title,
-                        picture: room.pic,
-                        message: lastMessage.message,
-                        users: room.users
-                    }});   
+            if(room.users.length > 2) {
+                return res.status(200).json({ status: 200, message: "success", data: {
+                    id: room.id,
+                    title : room.title,
+                    picture: room.pic,
+                    message: msg,
+                    users: room.users
+                }});   
+            } else {
+
+                let user2;
+
+                if (room.users[0] !== req.user.id) {
+                    user2 = await users.getUser(room.users[0]);
                 } else {
-
-                    let user2;
-
-                    if (room.users[0] !== req.user.id) {
-                        user2 = await users.getUser(room.users[0]);
-                    } else {
-                        user2 = await users.getUser(room.users[1]);
-                    }
-
-                    if(!user2){
-                        return res.status(400).json({ 
-                            status: 400, 
-                            message: "User doesnt exist", 
-                            data: null
-                        }); 
-                    }
-
-                    return res.status(200).json({ status: 200, message: "success", data: {
-                        id: room.id,
-                        title : user2.nickname,
-                        picture: user2.avatar,
-                        message: lastMessage.message,
-                        users: room.users
-                    }});   
+                    user2 = await users.getUser(room.users[1]);
                 }
+
+                if(!user2){
+                    return res.status(400).json({ 
+                        status: 400, 
+                        message: "User doesnt exist", 
+                        data: null
+                    }); 
+                }
+
+                return res.status(200).json({ status: 200, message: "success", data: {
+                    id: room.id,
+                    title : user2.nickname,
+                    picture: user2.avatar,
+                    message: msg,
+                    users: room.users
+                }});   
             }
     
-            return res.status(200).json({ status: 200, message: "success", data: null});   
+            // return res.status(200).json({ status: 200, message: "success", data: null});   
             
         } catch (error) {
             console.log(error);
