@@ -322,7 +322,7 @@ class RoomAPI {
                     }); 
                 }
     
-                if(!/^[A-zА-яЁё ]*$/.test(req.body.title)){
+                if(!/^[A-zА-яЁё\s]*$/.test(req.body.title)){
                     return res.status(400).json({ 
                         status: 400, 
                         message: "-title- must contain only letters and spaces",

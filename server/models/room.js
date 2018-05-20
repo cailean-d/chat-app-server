@@ -13,7 +13,7 @@ const roomSchema = new Schema({
     },
     pic: {
         type: String,
-        default: 'room.png'
+        default: '/assets/images/default-room.png'
     },
     owner: {
         type: String, 
