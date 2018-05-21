@@ -21,20 +21,33 @@ module.exports = function(io){
 function chatSocket(socket) {
 
     socket.on('room', function(room) {
+
         socket.join(room);
+
     });
 
     socket.on('room_message', (data) => {
+
         let res = JSON.parse(data);
+        
         socket.broadcast.to(res.chat_id).emit('room_message', data);
+
     });
+
+    socket.on('invite_room', function(data) {
+
+        let d = JSON.parse(data);
+        
+        if (users[d.user_id]) users[d.user_id].emit('room_invited', JSON.stringify(d.chat_id));
+
+    })
 
 }
 
 function friendSocket(socket) {
 
     socket.on('invite', (data) => {
-    
+
         let d = JSON.parse(data);
 
         if (users[d.id]) users[d.id].emit('invited', JSON.stringify(d.user));
@@ -74,7 +87,7 @@ function friendSocket(socket) {
     })
 
 }
-    
+
 
 function userOnline(socket) {
 
