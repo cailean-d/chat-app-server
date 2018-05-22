@@ -194,86 +194,92 @@ class UserAPI {
         try {
             
             if(req.body.id){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your id', 
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your id', 
+                //     data: null
+                // }); 
+                delete req.body.id;
             }
     
             if(req.body.date){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your registration date',
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your registration date',
+                //     data: null
+                // }); 
+                delete req.body.date;
             }
     
             if(req.body.email){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your email',
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your email',
+                //     data: null
+                // }); 
+                delete req.body.email;
             }
     
             if(req.body.status){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your status',
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your status',
+                //     data: null
+                // }); 
+                delete req.body.status;
             }
     
             if(req.body.rooms){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your rooms',
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your rooms',
+                //     data: null
+                // }); 
+                delete req.body.rooms;
             }
     
             if(req.body.deleted){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: 'You cannot change your delete status',
-                    data: null
-                }); 
+                // return res.status(400).json({ 
+                //     status: 400, 
+                //     message: 'You cannot change your delete status',
+                //     data: null
+                // }); 
+                delete req.body.deleted;
             }
     
-            if(req.body.fistname && !/^[A-zА-яЁё]*$/.test(req.body.fistname)){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "-firstname- must contain only letters",
-                    data: null
-                }); 
-            }
+            // if(req.body.fistname && !/^[A-zА-яЁё]*$/.test(req.body.fistname)){
+            //     return res.status(400).json({ 
+            //         status: 400, 
+            //         message: "-firstname- must contain only letters",
+            //         data: null
+            //     }); 
+            // }
     
-            if(req.body.fistname && (req.body.fistname.length < 2 && req.body.fistname.length > 30)){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "-firstname- 's length must be more then 2 and less then 30",
-                    data: null
-                }); 
-            }
+            // if(req.body.fistname && (req.body.fistname.length < 2 && req.body.fistname.length > 30)){
+            //     return res.status(400).json({ 
+            //         status: 400, 
+            //         message: "-firstname- 's length must be more then 2 and less then 30",
+            //         data: null
+            //     }); 
+            // }
     
-            if(req.body.lastname && !/^[A-zА-яЁё]*$/.test(req.body.lastname)){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "-lastname- must contain only letters",
-                    data: null
-                }); 
-            }
+            // if(req.body.lastname && !/^[A-zА-яЁё]*$/.test(req.body.lastname)){
+            //     return res.status(400).json({ 
+            //         status: 400, 
+            //         message: "-lastname- must contain only letters",
+            //         data: null
+            //     }); 
+            // }
     
-            if(req.body.lastname && (req.body.lastname.length < 2 && req.body.lastname.length > 30)){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "-lastname- 's length must be more then 2 and less then 30",
-                    data: null
-                }); 
-            }
+            // if(req.body.lastname && (req.body.lastname.length < 2 && req.body.lastname.length > 30)){
+            //     return res.status(400).json({ 
+            //         status: 400, 
+            //         message: "-lastname- 's length must be more then 2 and less then 30",
+            //         data: null
+            //     }); 
+            // }
     
-            if(req.body.nickname && !/^[A-Za-z]+[0-9]*[-_]*/.test(req.body.nickname)){
+            if(req.body.nickname && !/^[A-Za-zА-Яа-я\s-_]+[0-9]*$/.test(req.body.nickname)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-nickname- must contain only letters, numbers and -_",
@@ -297,17 +303,17 @@ class UserAPI {
                 }); 
             }
     
-            if(req.body.about && (req.body.about.length < 1 && req.body.about.length > 255)){
-                return res.status(400).json({ 
-                    status: 400, 
-                    message: "-about- 's length must be more then 1 and less then 255",
-                    data: null
-                }); 
-            }
+            // if(req.body.about && (req.body.about.length < 1 && req.body.about.length > 255)){
+            //     return res.status(400).json({ 
+            //         status: 400, 
+            //         message: "-about- 's length must be more then 1 and less then 255",
+            //         data: null
+            //     }); 
+            // }
     
-            if(req.body.about){
-                req.body.about = htmlspecialchars(req.body.about);
-            }
+            // if(req.body.about){
+            //     req.body.about = htmlspecialchars(req.body.about);
+            // }
     
             if(req.body.website && !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(req.body.website)){
                 return res.status(400).json({ 
@@ -342,7 +348,7 @@ class UserAPI {
                 }); 
             }
             
-            if(req.body.country && !/^[A-zА-яЁё]*$/.test(req.body.country)){
+            if(req.body.country && !/^[a-zA-Zа-яА-ЯёЁ\s-]{3,40}$/.test(req.body.country)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-lastname- must contain only letters",
@@ -358,7 +364,7 @@ class UserAPI {
                 }); 
             }
     
-            if(req.body.city && !/^[A-zА-яЁё]*$/.test(req.body.city)){
+            if(req.body.city && !/^[a-zA-Zа-яА-ЯёЁ\s-]{3,40}$/.test(req.body.city)){
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-lastname- must contain only letters",
@@ -370,6 +376,22 @@ class UserAPI {
                 return res.status(400).json({ 
                     status: 400, 
                     message: "-lastname- 's length must be more then 3 and less then 40",
+                    data: null
+                }); 
+            }
+    
+            if(req.body.birthday && !/^\d{2}(\.|\/)\d{2}(\.|\/)\d{4}$/.test(req.body.birthday)){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: "-birthday- incorrect pattern",
+                    data: null
+                }); 
+            }
+    
+            if(req.body.address && !/^[a-zA-Zа-яА-ЯёЁ\s\,\.\:\-\d]{4,50}$/.test(req.body.address)){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: "-address- incorrect",
                     data: null
                 }); 
             }
