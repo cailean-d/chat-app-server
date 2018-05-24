@@ -13,8 +13,8 @@ router.get('/users', users.getUsers);
 router.get('/users/count', users.getCount);
 router.get('/users/me', users.getMyProfile);
 router.get('/users/:id', users.getUser);
-router.put('/users', users.updateUser);
-router.put('/users/restore', users.restoreUser);
+router.patch('/users', users.updateUser);
+router.patch('/users/restore', users.restoreUser);
 router.delete('/users', users.deleteUser);
 
 // upload api
@@ -58,7 +58,7 @@ router.delete('/rooms/:room/:user', rooms.deleteUserFromRoom);
 router.get('/messages/:room', messages.getMessages);
 router.get('/messages/:room/:message_id', messages.getMessage);
 router.post('/messages/:room', messages.addMessage);
-router.put('/messages/:room/:message_id', messages.readMessage);
+router.patch('/messages/:room/:message_id', messages.readMessage);
 router.delete('/messages/:room/:message_id', messages.deleteMessage);
 router.delete('/messages/:room/:message_id/hide', messages.hideMessage);
 
