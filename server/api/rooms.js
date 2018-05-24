@@ -338,7 +338,7 @@ class RoomAPI {
                     });
                 }
     
-                if(req.body.title.length < 3 && req.body.title.length > 30){
+                if(req.body.title.length < 3 || req.body.title.length > 30){
                     return res.status(400).json({ 
                         status: 400, 
                         message: "-title- 's length must be more then 3 and less then 30",
