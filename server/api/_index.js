@@ -19,8 +19,8 @@ router.delete('/users', users.deleteUser);
 
 // upload api
 router.post('/upload', upload.uploadFile);
-router.post('/upload/avatar', upload.uploadAvatar);
-router.post('/upload/room/:room', upload.uploadRoomImage);
+router.patch('/upload/avatar', upload.uploadAvatar);
+router.patch('/upload/room/:room', upload.uploadRoomImage);
 
 // invites api
 router.get('/invites', friends.getInvites);

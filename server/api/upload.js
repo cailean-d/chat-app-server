@@ -15,14 +15,11 @@ class UploadAPI {
     }
     
     getType(mimetype){
-        if (mimetype.indexOf('jpeg') != -1 ){
-            return "jpeg";
-        } else if(mimetype.indexOf('png') != -1){
-            return "png";
-        }
+        return mimetype.split('.').pop();
     }
     
     async uploadAvatar(req, res){
+
         try {
             if(!req.files.avatar){
               return  res.status(400).json({ 
@@ -32,14 +29,13 @@ class UploadAPI {
                 }); 
             }
     
-            let type = req.files.avatar.mimetype;
             let id = uniqid();
-            let fileType = this.getType(type);
+            let fileType = this.getType(req.files.avatar.name);
             let filename = `${id}.${fileType}`;
     
-            file = req.files.avatar;
+            let file = req.files.avatar;
     
-            if(fileType != 'jpeg' || fileType != 'png'){
+            if(fileType != 'jpeg' && fileType != 'png' && fileType  != 'jpg'){
                 return  res.status(400).json({ 
                     status: 400, 
                     message: 'Please upload jpeg or png image',
@@ -124,12 +120,11 @@ class UploadAPI {
                 }); 
             }
     
-            let type = req.files.room_image.mimetype;
             let id = uniqid();
-            let fileType = getType(type);
+            let fileType = getType(req.files.room_image.name);
             let filename = `${id}.${fileType}`;
     
-            file = req.files.room_image;
+            let file = req.files.room_image;
     
             if(fileType != 'jpeg' || fileType != 'png'){
                 return res.status(400).json({ 
@@ -162,12 +157,11 @@ class UploadAPI {
                 }); 
             }
     
-            let type = req.files.file.mimetype;
             let id = uniqid();
-            let fileType = getType(type);
+            let fileType = getType(req.files.file);
             let filename = `${id}.${fileType}`;
     
-            file = req.files.file;
+            let file = req.files.file;
 
             let fileFullPath = `assets/files/${filename}`;
     
