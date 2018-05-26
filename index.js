@@ -54,7 +54,7 @@ const global_socket = require('./server/socket/global')(io);
 app.use(cors())                                                    // allow cors
 app.use(bodyParser.json());                                        // post data json
 app.use(bodyParser.urlencoded({ extended: false }));               // post data encoded
-app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 }}));    // file upload mw
+app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 }}));    // file upload mw
 app.use(device.capture());                                         // user device type info
 app.use(useragent.express());                                      // user browser info
 app.use(requestIp.mw())                                            // user ip info
@@ -62,7 +62,7 @@ app.use(cookieParser(config.auth.session.secret))                  // parse cook
 app.use(session(sessionConfig(session)));                          // app sessions
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('../chat-app/dist'));                                 // static dir
+app.use(express.static(config.client_root));                       // static dir
 app.use('/auth', auth);                                            // aut
 app.use('/api', authMiddleware);                                   // auth is required for api
 app.use('/api', api);                                              // include server api
@@ -70,7 +70,7 @@ app.use('/api', api);                                              // include se
 
 //send index file from all routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../chat-app/dist/index.html'));
+    res.sendFile(path.join(__dirname, config.client_root + 'index.html'));
 });
   
 

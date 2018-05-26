@@ -18,6 +18,7 @@ router.patch('/users/restore', users.restoreUser);
 router.delete('/users', users.deleteUser);
 
 // upload api
+router.post('/upload', upload.uploadFile);
 router.post('/upload/avatar', upload.uploadAvatar);
 router.post('/upload/room/:room', upload.uploadRoomImage);
 

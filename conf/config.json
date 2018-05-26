@@ -1,4 +1,5 @@
 {
+	"client_root": "./../chat-app/dist/",
 	"db":{
 		"mongodb":{
 			"host": "localhost",
