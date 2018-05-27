@@ -50,6 +50,11 @@ class Socket {
             if (users[d.user_id]) users[d.user_id].emit('room_invited', JSON.stringify(d.chat_id));
     
         })
+
+        this.socket.on('read_message', (data) => {
+            let res = JSON.parse(data);
+            this.socket.broadcast.to(res.chat_id).emit('message_read', data);
+        })
     
     }
     

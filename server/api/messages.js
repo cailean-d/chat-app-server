@@ -141,8 +141,8 @@ class MessageAPI {
             }
     
             let users = permissions.users;
-            await database.addMessage(req.user.id, req.body.message, req.params.room);   
-            return res.status(200).json({status: 200, message: "success", data: null});
+            let r = await database.addMessage(req.user.id, req.body.message, req.params.room);   
+            return res.status(200).json({status: 200, message: "success", data: r.id});
     
         } catch (error) {
             console.log(error);
@@ -359,6 +359,7 @@ class MessageAPI {
                 status: 200, 
                 message: "success", 
                 data: {
+                    id: message.id,
                     sender_id: message.sender,
                     sender_nickname: user.nickname,
                     sender_avatar: user.avatar,
@@ -411,6 +412,7 @@ class MessageAPI {
                                                         limit);
             for(let message of messages){
                 data.push({
+                    id: message.id,
                     message: message.message,
                     sender_id: message.sender,
                     sender_nickname: users[message.sender].nickname,
