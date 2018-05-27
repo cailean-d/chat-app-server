@@ -579,7 +579,7 @@ class RoomAPI {
             let rooms = user1.rooms;
     
             if(rooms.length == 0) {
-                return this.createRoom(req, res);
+                return this._createRoom(req, res);
             }
     
             for(let room_id of rooms){
@@ -594,7 +594,7 @@ class RoomAPI {
                 } 
             }
     
-            return this.createRoom(req, res);
+            return this._createRoom(req, res);
     
         } catch (error) {
             console.log(error);
@@ -602,11 +602,68 @@ class RoomAPI {
         }
     }
     
-    async createRoom(req, res){
+    async _createRoom(req, res){
         try {
             let room = await database.addRoom(req.user.id, req.params.user);
             await users.addRoom(room.id, req.user.id);
             await users.addRoom(room.id, req.params.user);
+            return res.status(200).json({ status: 200, message: "success", data: room.id});
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null}); 
+        }
+    }
+
+    async createRoom(req, res) {
+        try {
+
+            if(!req.body.users){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: "-users- is required",
+                    data: null
+                }); 
+            }
+
+            let _users = JSON.parse(req.body.users);
+
+            if (_users.length > 2) {
+                if(!req.body.title){
+                    return res.status(400).json({ 
+                        status: 400, 
+                        message: "-title- is required",
+                        data: null
+                    }); 
+                }
+    
+                if(!/^[A-zА-яЁё\s]*$/.test(req.body.title)){
+                    return res.status(400).json({ 
+                        status: 400, 
+                        message: "-title- must contain only letters and spaces",
+                        data: null
+                    });
+                }
+    
+                if(req.body.title.length < 3 || req.body.title.length > 30){
+                    return res.status(400).json({ 
+                        status: 400, 
+                        message: "-title- 's length must be more then 3 and less then 30",
+                        data: null
+                    }); 
+                }
+            }
+
+            let room = await database.addRoom(_users[0], _users[1]);
+            await database.setTitle(room.id, req.body.title);
+            
+            await users.addRoom(room.id, _users[0]);
+            await users.addRoom(room.id, _users[1]);
+
+            for(let i = 2; i < _users.length; i++){
+                await database.addUser(room.id, _users[i]);
+                await users.addRoom(room.id, _users[i]);
+            }
+
             return res.status(200).json({ status: 200, message: "success", data: room.id});
         } catch (error) {
             console.log(error);

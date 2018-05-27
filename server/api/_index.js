@@ -47,6 +47,7 @@ router.delete('/favorite/:id', users.deleteFavorite);
 
 // rooms api
 router.post('/rooms/open/:user', rooms.openRoom);
+router.post('/rooms', rooms.createRoom);
 router.get('/rooms', rooms.getRooms);
 router.get('/rooms/:room', rooms.getRoom);
 router.get('/rooms/:room/users', rooms.getUsersFromRoom);
