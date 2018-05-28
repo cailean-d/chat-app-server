@@ -43,8 +43,8 @@ class Message {
         return MessageModel.find({
             $and: [
             { room: room },
-            { hidden: { $ne: user } 
-        }]
+            { hidden: { $ne: user }}
+        ]
         }).skip(offset).limit(limit).sort({date: -1})
         .exec();
     }
@@ -70,6 +70,16 @@ class Message {
     
     deleteMessagesFromRoom(room){
         return MessageModel.findAndRemove({room: room});
+    }
+
+    getUnreadMessageCount(user, room){
+        return MessageModel.count({
+            $and: [
+            { room: room },
+            { sender: { $ne: user }},
+            { status: 0 }
+        ]
+        });
     }
     
 }

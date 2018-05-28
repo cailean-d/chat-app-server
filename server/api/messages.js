@@ -438,6 +438,27 @@ class MessageAPI {
         }
     }
 
+    async getUnreadMessageCount(req, res){
+        try {
+
+            let permissions = this.roomPermissions(req, res);
+            
+            if (!permissions){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: 'You are not a member of this room',
+                    data: null
+                }); 
+            }
+
+            let unreadMsgCount = await database.getUnreadMessageCount(req.user.id, req.params.room);
+            return res.status(200).json({ status: 200, message: "success", data: unreadMsgCount});
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null}); 
+        }
+    }
+
 }
 
 module.exports = new MessageAPI();

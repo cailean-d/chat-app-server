@@ -58,6 +58,7 @@ router.delete('/rooms/:room/:user', rooms.deleteUserFromRoom);
 
 // messages api
 router.get('/messages/:room', messages.getMessages);
+router.get('/messages/:room/count', messages.getUnreadMessageCount);
 router.get('/messages/:room/:message_id', messages.getMessage);
 router.post('/messages/:room', messages.addMessage);
 router.patch('/messages/:room/:message_id', messages.readMessage);
