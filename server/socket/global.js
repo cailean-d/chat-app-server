@@ -56,6 +56,11 @@ class Socket {
             this.socket.broadcast.to(res.chat_id).emit('message_read', data);
         })
     
+        this.socket.on('typing', (data) => {
+            let res = JSON.parse(data);
+            this.socket.broadcast.to(res.chat_id).emit('typing', data);
+        })
+    
     }
     
     friend() {
