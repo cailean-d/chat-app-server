@@ -1,3 +1,5 @@
+const notification = require('../database/notification');
+
 let users = {};
 
 module.exports = function(io){
@@ -25,6 +27,11 @@ class Socket {
         this.chat();
         this.friend();
         this.online();
+    }
+
+    async sendNotification(id, message) {
+        let notif = await notification.addNotification(id, message);
+        if (users[id]) users[id].emit('notification', JSON.stringify(notif));
     }
 
     chat() {
@@ -78,6 +85,8 @@ class Socket {
             let d = JSON.parse(data);
     
             if (users[d.id]) users[d.id].emit('invite_canceled', JSON.stringify(d.user));
+
+            this.sendNotification(d.id, `Пользователь ${d.user.nickname} отменил заявку в друзья`);
     
         })
     
@@ -86,6 +95,8 @@ class Socket {
             let d = JSON.parse(data);
     
             if (users[d.id]) users[d.id].emit('invite_rejected', JSON.stringify(d.user));
+
+            this.sendNotification(d.id, `Пользователь ${d.user.nickname} отклонил заявку в друзья`);
     
         })
     
@@ -94,6 +105,8 @@ class Socket {
             let d = JSON.parse(data);
     
             if (users[d.id]) users[d.id].emit('friend_added', JSON.stringify(d.user));
+
+            this.sendNotification(d.id, `Пользователь ${d.user.nickname} принял заявку в друзья`);
     
         })
     
@@ -102,6 +115,8 @@ class Socket {
             let d = JSON.parse(data);
     
             if (users[d.id]) users[d.id].emit('friend_deleted', JSON.stringify(d.user));
+
+            this.sendNotification(d.id, `Пользователь ${d.user.nickname} удалил Вас из друзей`);
     
         })
     

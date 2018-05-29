@@ -9,7 +9,7 @@ class FriendAPI {
         for (const i of names) {
             this[i] = this[i].bind(this);
         }
-     }
+    }
 
     async inviteFriend(req, res){
         try {

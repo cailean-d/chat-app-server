@@ -7,6 +7,7 @@ const upload = require('./upload');
 const friends = require('./friends');
 const messages = require('./messages');
 const rooms = require('./rooms');
+const notification = require('./notification');
 
 // user api
 router.get('/users', users.getUsers);
@@ -64,6 +65,10 @@ router.post('/messages/:room', messages.addMessage);
 router.patch('/messages/:room/:message_id', messages.readMessage);
 router.delete('/messages/:room/:message_id', messages.deleteMessage);
 router.delete('/messages/:room/:message_id/hide', messages.hideMessage);
+
+//notification api
+router.get('/notification', notification.getNotifications);
+router.delete('/notification/:id', notification.deleteNotification);
 
 
 router.all('**', (req, res) => res.status(404).json({ status: 404, message: 'API not found', data: null}));
