@@ -121,7 +121,7 @@ class UploadAPI {
             }
     
             let id = uniqid();
-            let fileType = getType(req.files.room_image.name);
+            let fileType = this.getType(req.files.room_image.name);
             let filename = `${id}.${fileType}`;
     
             let file = req.files.room_image;
@@ -158,7 +158,7 @@ class UploadAPI {
             }
     
             let id = uniqid();
-            let fileType = getType(req.files.file);
+            let fileType = this.getType(req.files.file.name);
             let filename = `${id}.${fileType}`;
     
             let file = req.files.file;
