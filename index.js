@@ -41,14 +41,8 @@ const api = require('./server/api/_index');
 const auth = require('./server/auth/_index');
 const authMiddleware = require('./server/middlewares/auth');
 
-//socket namespaces
-// let friends = io.of('/friends');
-// let general_chat = io.of('/general_chat');
-
 //socket modules
-const global_socket = require('./server/socket/global')(io);
-// let socket_general_chat = require('./server/socket/general_chat')(global);
-// let socket_friends      = require('./server/socket/friends')(friends, global);
+const socket = require('./server/socket/global')(io);
 
 //middlewares
 app.use(cors())                                                    // allow cors
