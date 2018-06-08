@@ -76,7 +76,7 @@ app.get('*', (req, res) => {
 
 // connect to database
 mongoose.Promise = require('bluebird');
-mongoose.connect(dbConfig, function(err) {
+mongoose.connect(dbConfig, (err) => {
     if (err) throw err;
     console.log(`connected to ${dbConfig}`.cyan);
 });
@@ -90,7 +90,7 @@ https.listen((process.env.PORT || '443'), () => {
 
 // redirect http to https
 const http = express();
-http.get('*', function(req, res) {  
+http.get('*', (req, res) => {  
     res.redirect('https://' + req.headers.host + ':443' + req.url);
 });
 http.listen(80);
