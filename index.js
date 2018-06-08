@@ -84,7 +84,7 @@ mongoose.connect(dbConfig, (err) => {
 
 //start server
 https.listen((process.env.PORT || '443'), () => {
-   console.log(`Server running on https://localhost:${https.address().port}`.green)
+   console.log(`Server running on https://localhost:${https.address().port}`.green);
 });
 
 
