@@ -1,4 +1,5 @@
 const notification = require('../database/notification');
+const users = require('../database/users');
 
 let users = {};
 
@@ -33,6 +34,10 @@ class Socket {
     async sendNotification(id, message) {
         let notif = await notification.addNotification(id, message);
         if (users[id]) users[id].emit('notification', JSON.stringify(notif));
+    }
+
+    async updateUser(id, data) {
+        await database.updateUser(id, data);
     }
 
     chat() {
@@ -127,12 +132,15 @@ class Socket {
     online() {
     
         this.socket.broadcast.emit('online', this.socket.handshake.query.id);
+
+        this.updateUser(this.socket.handshake.query.id, { online: 'ONLINE' });
     
         this.socket.on('disconnect', () => {
             let id = this.socket.handshake.query.id;
             setTimeout(() => {
                 if (!users[id]) {
                     this.socket.broadcast.emit('offline', this.socket.handshake.query.id);
+                    this.updateUser(this.socket.handshake.query.id, { online: Date.now() });
                 }
             }, 10000);
         });
