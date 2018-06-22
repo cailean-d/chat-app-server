@@ -88,6 +88,10 @@ const userSchema = new Schema({
         type: Boolean, 
         default: false
     },
+    online: {
+        type: String | Number,
+        default: null
+    },
     date: {
         type: Date, 
         required: true,
