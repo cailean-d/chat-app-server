@@ -89,7 +89,7 @@ const userSchema = new Schema({
         default: false
     },
     online: {
-        type: String | Number,
+        type: String,
         default: null
     },
     date: {

@@ -1,5 +1,5 @@
 const notification = require('../database/notification');
-const users = require('../database/users');
+const usersDB = require('../database/users');
 
 let users = {};
 
@@ -37,7 +37,7 @@ class Socket {
     }
 
     async updateUser(id, data) {
-        await database.updateUser(id, data);
+        await usersDB.updateUser(id, data);
     }
 
     chat() {
