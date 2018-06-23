@@ -159,22 +159,22 @@ class Socket {
 
     peerSignal() {
 
-        socket.on('call', function (data) {
+        this.socket.on('call', function (data) {
             var _data = JSON.parse(data);
             if (users[_data.user]) users[_data.user].emit('call', data);
         });
         
-        socket.on('answer', function (data) {
+        this.socket.on('answer', function (data) {
             var _data = JSON.parse(data);
             if (users[_data.user]) users[_data.user].emit('answer', data);
         })
     
-        socket.on('ERR_STREAM_SUPPORT', function (data) {
+        this.socket.on('ERR_STREAM_SUPPORT', function (data) {
             var _data = JSON.parse(data);
             if (users[_data.user]) users[_data.user].emit('ERR_STREAM_SUPPORT');
         })
     
-        socket.on('ERR_WEBRTC_SUPPORT', function (data) {
+        this.socket.on('ERR_WEBRTC_SUPPORT', function (data) {
             var _data = JSON.parse(data);
             if (users[_data.user]) users[_data.user].emit('ERR_WEBRTC_SUPPORT');
         })

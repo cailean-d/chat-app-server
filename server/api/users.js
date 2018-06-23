@@ -55,6 +55,7 @@ class UserAPI {
                     country: user.country,
                     city: user.city,
                     language: user.language,
+                    online: user.online,
                     date: user.date
                 });
             }
@@ -130,6 +131,7 @@ class UserAPI {
                         country: user.country,
                         city: user.city,
                         language: user.language,
+                        online: user.online,
                         date: user.date
                     }
                 });
@@ -180,6 +182,7 @@ class UserAPI {
                     status: user.status,
                     avatar: user.avatar,
                     lastname: user.lastname,
+                    online: user.online,
                     firstname: user.firstname
                 }
             });
@@ -548,6 +551,7 @@ class UserAPI {
                 website: user.website,
                 country: user.country,
                 city: user.city,
+                online: user.online,
                 language: user.language,
             }
 
@@ -608,6 +612,7 @@ class UserAPI {
                         phone: user.phone,
                         website: user.website,
                         country: user.country,
+                        online: user.online,
                         city: user.city,
                         language: user.language,
                     });
