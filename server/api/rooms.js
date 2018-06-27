@@ -67,7 +67,8 @@ class RoomAPI {
                             title : room.title,
                             picture: room.pic,
                             message: lastMessage.message,
-                            users: room.users
+                            users: room.users,
+                            messageDate: lastMessage.date
                         });
                     } else {
 
@@ -92,7 +93,8 @@ class RoomAPI {
                             title : user2.nickname,
                             picture: user2.avatar,
                             message: lastMessage.message,
-                            users: room.users
+                            users: room.users,
+                            messageDate: lastMessage.date
                         });
                     }
                 }
@@ -162,6 +164,7 @@ class RoomAPI {
     
             let lastMessage = await messages.getLastMessage(req.user.id, room.id);
             let msg;
+            let msgDate;
 
             if(lastMessage){
 
@@ -176,9 +179,11 @@ class RoomAPI {
                 }
 
                 msg = lastMessage.message;
+                msgDate = lastMessage.date;
 
             } else {
                 msg = "";
+                msgDate = "";
             }
 
     
@@ -188,7 +193,8 @@ class RoomAPI {
                     title : room.title,
                     picture: room.pic,
                     message: msg,
-                    users: room.users
+                    users: room.users,
+                    messageDate: msgDate
                 }});   
             } else {
 
@@ -213,7 +219,8 @@ class RoomAPI {
                     title : user2.nickname,
                     picture: user2.avatar,
                     message: msg,
-                    users: room.users
+                    users: room.users,
+                    messageDate: msgDate
                 }});   
             }
     
@@ -494,6 +501,7 @@ class RoomAPI {
                     country: user.country,
                     city: user.city,
                     language: user.language,
+                    online: user.online
                 });
             }
     

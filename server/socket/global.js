@@ -128,7 +128,6 @@ class Socket {
     
     }
     
-    
     online() {
     
         this.socket.broadcast.emit('online', this.socket.handshake.query.id);
@@ -145,6 +144,10 @@ class Socket {
             }, 10000);
         });
     
+        this.socket.on('update_user', (data) => {
+            this.socket.broadcast.emit('update_user', data);
+        });
+    
         this.socket.on('get_online', (data) => {
     
             if (users[data]) {
@@ -154,6 +157,7 @@ class Socket {
             }
     
         })
+        
     
     }
 
@@ -162,6 +166,16 @@ class Socket {
         this.socket.on('call', function (data) {
             var _data = JSON.parse(data);
             if (users[_data.user]) users[_data.user].emit('call', data);
+        });
+    
+        this.socket.on('close', function (data) {
+            var _data = JSON.parse(data);
+            if (users[_data.user]) users[_data.user].emit('close', data);
+        });
+
+        this.socket.on('reject', function (data) {
+            var _data = JSON.parse(data);
+            if (users[_data.user]) users[_data.user].emit('reject', data);
         });
         
         this.socket.on('answer', function (data) {
