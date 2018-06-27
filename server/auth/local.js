@@ -11,6 +11,7 @@ passport.use(new LocalStrategy({
     try {
         const user = await User.getUserByEmail(req.body.email);
         if (!user) { return done(null, false, {message: 'Incorrect email'}); }
+        if (!user.active) { return done(null, false, {message: 'Incorrect email'}); }
         let comparePassword = await bcrypt.compare(req.body.password, user.password);
         if(!comparePassword){ return done(null, false, {message: 'Incorrect password'}); }
         return done(null, user);

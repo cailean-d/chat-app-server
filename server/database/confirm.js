@@ -19,7 +19,7 @@ class Confirm {
     }
 
     getHash(hash){
-        return ConfirmModel.find({
+        return ConfirmModel.findOne({
             $and: [
                 { hash: hash }
             ]

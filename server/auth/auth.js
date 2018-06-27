@@ -40,7 +40,6 @@ function sendMail(userid, address) {
 }
 
 
-
 class AuthAPI {
 
     async registerUser(req, res){
@@ -278,7 +277,7 @@ class AuthAPI {
                 }); 
             }
 
-            let record = confirmDB.getHash(req.params.hash);
+            let record = await confirmDB.getHash(req.params.hash);
 
             if (record) {
                 await database.updateUser(record.user_id, {active: true});
