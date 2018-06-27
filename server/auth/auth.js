@@ -1,7 +1,45 @@
 const database = require('../database/users');
+const confirmDB = require('../database/confirm');
 const userinfo = require('../middlewares/userinfo');
 const bcrypt = require('bcryptjs');       
 const passport = require('passport');
+const nodemailer = require("nodemailer");
+const uniqid = require('uniqid');
+
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, 
+    auth: {
+        user: 'chat.application.dl@gmail.com', 
+        pass: '123smoke456' 
+    }
+});
+
+
+function sendMail(userid, address) {
+
+    let hash = uniqid();
+
+    let mailOptions = {
+        from: '"Chat Application"', 
+        to: address, 
+        subject: 'Подтверждение регистрации', 
+        text: `Для завершения регистрации перейдите по ссылке https://app.cailean.ga/authe/confirm/${hash}`, 
+        html: `Для завершения регистрации перейдите по ссылке <a href="https://app.cailean.ga/authe/confirm/${hash}">https://app.cailean.ga/authe/confirm/${hash}</a>` 
+    };
+
+    confirmDB.addHash(userid, hash);
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+    });
+
+}
+
+
 
 class AuthAPI {
 
@@ -59,7 +97,10 @@ class AuthAPI {
     
             await database.updateUser(newUser.id, {status: 'online'});
 
+            sendMail(newUser.id, req.body.email);
+
             return res.status(200).json({ status: 200, message: "success", data: null});
+
     
         } catch (error) {
             if(error.code === 11000){
@@ -129,6 +170,7 @@ class AuthAPI {
                 data: null
             }); 
         }
+
         if(!req.body.password){
             return res.status(400).json({ 
                 status: 400, 
@@ -221,6 +263,40 @@ class AuthAPI {
         }
 
         passport.authenticate('vkontakte')(req, res, next);
+
+    }
+
+    async confirmAccount(req, res) {
+
+        try {
+
+            if(!req.params.hash){
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: '-hash- is required',
+                    data: null
+                }); 
+            }
+
+            let record = confirmDB.getHash(req.params.hash);
+
+            if (record) {
+                await database.updateUser(record.user_id, {active: true});
+                await confirmDB.deleteHash(record.user_id);
+                return res.status(200).json({ status: 200, message: "success", data: null});
+            } else {
+                return res.status(400).json({ 
+                    status: 400, 
+                    message: "record does not exist",
+                    data: null
+                }); 
+            }
+
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ status: 500, message: error, data: null});
+        }
 
     }
 

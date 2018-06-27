@@ -92,6 +92,10 @@ const userSchema = new Schema({
         type: String,
         default: null
     },
+    active: {
+        type: Boolean,
+        default: false
+    },
     date: {
         type: Date, 
         required: true,
