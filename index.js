@@ -61,30 +61,37 @@ app.use('/api', authMiddleware);                                   // auth is re
 app.use('/api', api);                                              // include server api
 
 
-//send index file from all routes
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, config.client_root + 'index.html'));
-});
-  
 
-// connect to database
-mongoose.Promise = require('bluebird');
-mongoose.connect(dbConfig, (err) => {
-    if (err) throw err;
-    console.log(`connected to ${dbConfig}`.cyan);
+mongoose.connect(dbConfig, { useNewUrlParser: true, useCreateIndex: true });    
+mongoose.connection.on('error', () => {
+    console.log(`Failed to connect to [ ${dbConfig} ]`.red);
+    process.exit();
+});
+mongoose.connection.once('open', () => {
+    console.log(`Connected to ${dbConfig}`.cyan);
+    startHttpServer();
 });
 
 
-//start server
-https.listen((process.env.PORT || '3000'), () => {
-   console.log(`Server running on https://localhost:${https.address().port}`.green);
-});
+function startHttpServer() {
+ 
+    //send index file from all routes
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, config.client_root + 'index.html'));
+    });
+    
 
-
-// redirect http to https
-const http = express();
-http.get('*', (req, res) => {  
-    res.redirect('https://' + req.headers.host + ':3000' + req.url);
-});
-http.listen(80);
+    //start server
+    https.listen((process.env.PORT || '3000'), () => {
+        console.log(`Server running on https://localhost:${https.address().port}`.green);
+    });
+    
+    
+    // redirect http to https
+    const http = express();
+    http.get('*', (req, res) => {  
+        res.redirect('https://' + req.headers.host + ':3000' + req.url);
+    });
+    http.listen(80);
+}
 
