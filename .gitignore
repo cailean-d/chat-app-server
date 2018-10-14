@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/static
 
 # IDEs and editors
 /.idea
@@ -32,3 +33,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
