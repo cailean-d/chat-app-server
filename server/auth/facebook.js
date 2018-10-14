@@ -1,11 +1,11 @@
-const passport       = require('passport');
+const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const User  = require('./../database/users');
-const config = require('./../../conf/facebook');
+const config = require('./../../conf/oauth');
 
 passport.use(new FacebookStrategy({
-    clientID: config.id,
-    clientSecret: config.secret,
+    clientID: config.facebook.id,
+    clientSecret: config.facebook.secret,
     callbackURL: "https://localhost:3000/auth/login/facebook/callback",
     profileFields: ['id', 'displayName', 'photos', 'emails']
   },

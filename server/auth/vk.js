@@ -1,12 +1,12 @@
 const passport       = require('passport');
 const VKontakteStrategy = require('passport-vkontakte').Strategy;
 const User  = require('./../database/users');
-const config = require('./../../conf/vk');
+const config = require('./../../conf/oauth');
 
 passport.use(new VKontakteStrategy(
     {
-      clientID: config.id,
-      clientSecret: config.secret,
+      clientID: config.vk.id,
+      clientSecret: config.vk.secret,
       callbackURL: 'https://localhost:3000/auth/login/vk/callback',
     },
     function(accessToken, refreshToken, params, profile, done) {

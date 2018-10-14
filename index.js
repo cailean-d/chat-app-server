@@ -29,11 +29,11 @@ const sessionConfig = require('./conf/session');
 
 // passport auth
 const passport = require('./conf/passport');
-const passportLocal = require('./server/auth/local');
-const passportGoogle = require('./server/auth/google');
-const passportFacebook = require('./server/auth/facebook');
-const passportTwitter = require('./server/auth/twitter');
-const passportVKontakte = require('./server/auth/vk');
+require('./server/auth/local');
+require('./server/auth/google');
+require('./server/auth/facebook');
+require('./server/auth/twitter');
+require('./server/auth/vk');
 
 //custom modules
 const api = require('./server/api/_index');
@@ -41,7 +41,7 @@ const auth = require('./server/auth/_index');
 const authMiddleware = require('./server/middlewares/auth');
 
 //socket modules
-const socket = require('./server/socket/global')(io);
+require('./server/socket/global')(io);
 
 //middlewares
 app.use(cors())                                                    // allow cors
@@ -59,7 +59,6 @@ app.use(express.static(config.client_root));                       // static dir
 app.use('/auth', auth);                                            // aut
 app.use('/api', authMiddleware);                                   // auth is required for api
 app.use('/api', api);                                              // include server api
-
 
 
 mongoose.connect(dbConfig, { useNewUrlParser: true, useCreateIndex: true });    

@@ -1,6 +1,5 @@
 const fs = require('fs'); 
-const path = require('path');     
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, './config.json'), 'utf-8'));
+const config = JSON.parse(fs.readFileSync(require('path').join(__dirname, './config.json'), 'utf-8'));
 const RedisStore = require('connect-redis');  
 
 module.exports = function(session){
