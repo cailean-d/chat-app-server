@@ -6,7 +6,7 @@ const config = require('./../../conf/oauth');
 passport.use(new GoogleStrategy({
     clientID: config.google.id,
     clientSecret: config.google.secret,
-    callbackURL: "https://localhost:3000/auth/login/google/callback"
+    callbackURL: config.google.callback
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate(profile, function (err, user) {

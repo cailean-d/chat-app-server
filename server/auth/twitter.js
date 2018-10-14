@@ -6,7 +6,7 @@ const config = require('./../../conf/oauth');
 passport.use(new TwitterStrategy({
     consumerKey: config.twitter.id,
     consumerSecret: config.twitter.secret,
-    callbackURL: "https://localhost:3000/auth/login/twitter/callback",
+    callbackURL: config.twitter.callback,
     userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
   },
   function(token, tokenSecret, profile, cb) {

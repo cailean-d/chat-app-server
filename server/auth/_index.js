@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('./auth');
-const passport = require('passport');
 
 router.post('/reg', auth.registerUser);
 router.post('/confirm/:hash', auth.confirmAccount);

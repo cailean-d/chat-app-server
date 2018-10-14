@@ -57,8 +57,9 @@ app.use(session(sessionConfig(session)));                          // app sessio
 app.use(sessionHandler);
 app.use(passport.initialize());                                    // init auth
 app.use(passport.session());                                       // auth session config
-app.use(express.static(config.client_root));                       // static dir
-app.use('/auth', auth);                                            // aut
+app.use(express.static(config.client_root));                       // client dir
+app.use(config.file_route, express.static(config.file_root));      // files dir
+app.use('/auth', auth);                                            // auth
 app.use('/api', authMiddleware);                                   // auth is required for api
 app.use('/api', api);                                              // include server api
 

@@ -43,10 +43,10 @@ class UploadAPI {
                 }); 
             }
 
-            let fileFullPath = `assets/images/avatar/${filename}`;
+            let fileFullPath = `images/avatar/${filename}`;
     
-            await file.mv(config.client_root + fileFullPath);
-            await database.updateUser(req.user.id, {avatar: fileFullPath});
+            await file.mv(config.file_root + fileFullPath);
+            await database.updateUser(req.user.id, {avatar: config.file_route + '/' + fileFullPath});
             return res.status(200).json({ status: 200, message: "success", data: fileFullPath});
     
         } catch (error) {
@@ -134,11 +134,15 @@ class UploadAPI {
                 }); 
             }
 
-            let fileFullPath = `assets/images/room_avatar/${filename}`;
+            let fileFullPath = `images/room_avatar/${filename}`;
     
             await file.mv(config.client_root + fileFullPath);
-            await room.setPic(req.params.room, fileFullPath);
-            return res.status(200).json({ status: 200, message: "success", data: fileFullPath});
+            await room.setPic(req.params.room, config.file_route + '/' + fileFullPath);
+            return res.status(200).json({ 
+                status: 200, 
+                message: "success", 
+                data: config.file_route + '/' + fileFullPath
+            });
     
         } catch (error) {
             console.log(error);
@@ -163,11 +167,15 @@ class UploadAPI {
     
             let file = req.files.file;
 
-            let fileFullPath = `assets/files/${filename}`;
+            let fileFullPath = `files/${filename}`;
     
             await file.mv(config.client_root + fileFullPath);
-            await room.setPic(req.params.room, fileFullPath);
-            return res.status(200).json({ status: 200, message: "success", data: fileFullPath});
+            await room.setPic(req.params.room, config.file_route + '/' + fileFullPath);
+            return res.status(200).json({ 
+                status: 200, 
+                message: "success", 
+                data: config.file_route + '/' + fileFullPath
+            });
     
         } catch (error) {
             console.log(error);

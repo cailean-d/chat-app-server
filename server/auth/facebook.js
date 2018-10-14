@@ -6,7 +6,7 @@ const config = require('./../../conf/oauth');
 passport.use(new FacebookStrategy({
     clientID: config.facebook.id,
     clientSecret: config.facebook.secret,
-    callbackURL: "https://localhost:3000/auth/login/facebook/callback",
+    callbackURL: config.facebook.callback,
     profileFields: ['id', 'displayName', 'photos', 'emails']
   },
   function(accessToken, refreshToken, profile, done) {
