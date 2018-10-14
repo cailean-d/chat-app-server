@@ -47,7 +47,11 @@ class UploadAPI {
     
             await file.mv(config.file_root + fileFullPath);
             await database.updateUser(req.user.id, {avatar: config.file_route + '/' + fileFullPath});
-            return res.status(200).json({ status: 200, message: "success", data: fileFullPath});
+            return res.status(200).json({ 
+                status: 200, 
+                message: "success", 
+                data: config.file_route + '/' + fileFullPath
+            });
     
         } catch (error) {
             console.log(error);
