@@ -140,7 +140,7 @@ class UploadAPI {
 
             let fileFullPath = `images/room_avatar/${filename}`;
     
-            await file.mv(config.client_root + fileFullPath);
+            await file.mv(config.file_root + fileFullPath);
             await room.setPic(req.params.room, config.file_route + '/' + fileFullPath);
             return res.status(200).json({ 
                 status: 200, 
@@ -173,7 +173,7 @@ class UploadAPI {
 
             let fileFullPath = `files/${filename}`;
     
-            await file.mv(config.client_root + fileFullPath);
+            await file.mv(config.file_root + fileFullPath);
             await room.setPic(req.params.room, config.file_route + '/' + fileFullPath);
             return res.status(200).json({ 
                 status: 200, 
