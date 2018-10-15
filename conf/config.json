@@ -1,8 +1,11 @@
 {
 	"client_root": "./../chat-app/dist/",
 	"file_root": "./static/",
-	"file_route": "static",
+	"file_route": "/static",
+	"api_route": "/api",
+	"auth_route": "/auth",
 	"check_email_activation": "false",
+	"upload_limit_mb": "50",
 	"db":{
 		"mongodb":{
 			"host": "127.0.0.1",

@@ -24,6 +24,7 @@ const io = require('socket.io')(https);                           // socket serv
 
 // configs
 const config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf-8'));
+const ul = Number(config.upload_limit_mb);
 const dbConfig = require('./conf/database');
 const sessionConfig = require('./conf/session');
 
@@ -48,7 +49,7 @@ require('./server/socket/global')(io);
 app.use(cors())                                                    // allow cors
 app.use(bodyParser.json());                                        // post data json
 app.use(bodyParser.urlencoded({ extended: false }));               // post data encoded
-app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 }}));    // file upload mw
+app.use(fileUpload({ limits: { fileSize: ul * 1024 * 1024 }}));    // file upload mw
 app.use(device.capture());                                         // user device type info
 app.use(useragent.express());                                      // user browser info
 app.use(requestIp.mw())                                            // user ip info
@@ -59,9 +60,9 @@ app.use(passport.initialize());                                    // init auth
 app.use(passport.session());                                       // auth session config
 app.use(express.static(config.client_root));                       // client dir
 app.use(config.file_route, express.static(config.file_root));      // files dir
-app.use('/auth', auth);                                            // auth
-app.use('/api', authMiddleware);                                   // auth is required for api
-app.use('/api', api);                                              // include server api
+app.use(config.auth_route, auth);                                  // auth
+app.use(config.api_route, authMiddleware);                         // auth is required for api
+app.use(config.api_route, api);                                    // include server api
 
 
 mongoose.connect(dbConfig, { useNewUrlParser: true, useCreateIndex: true });    
